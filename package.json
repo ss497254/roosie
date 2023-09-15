@@ -1,6 +1,6 @@
 {
-  "name": "chatoor",
-  "description": "chatoor - your all time partner",
+  "name": "roosie",
+  "description": "roosie - your all time partner",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -33,6 +33,7 @@
     "remark-math": "^5.1.1",
     "sass": "^1.59.2",
     "spark-md5": "^3.0.2",
+    "swr": "^2.2.2",
     "use-debounce": "^9.0.4",
     "zustand": "^4.3.8"
   },
