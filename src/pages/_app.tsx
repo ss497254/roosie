@@ -7,13 +7,10 @@ import NProgress from "nprogress";
 import { Layout } from "src/components/Layout";
 import { ErrorBoundary } from "src/components/error";
 import { useIsHydrated } from "src/hooks/useIsHydarted";
-import { useTheme } from "src/hooks/useTheme";
-import { useAccessStore } from "src/store";
-import { PageComponent } from "src/types/PageComponent";
-import { Loading } from "src/ui";
-
 import { useLoadData } from "src/hooks/useLoadData";
-import { getWSClient, initializeWSClient } from "src/lib/ws-client-store";
+import { useTheme } from "src/hooks/useTheme";
+import { initializeWSClient } from "src/lib/ws-client-store";
+import { useAccessStore } from "src/store";
 import "src/styles/animation.css";
 import "src/styles/font.css";
 import "src/styles/globals.scss";
@@ -23,7 +20,11 @@ import "src/styles/markdown.scss";
 import "src/styles/nprogress.css";
 import "src/styles/sidebar.scss";
 import "src/styles/window.scss";
+import { PageComponent } from "src/types/PageComponent";
+import { Loading } from "src/ui";
 import "src/ui/styles.scss";
+import { Cfetch } from "src/utils/fetch";
+import { SWRConfig } from "swr";
 
 Router.events.on("routeChangeStart", NProgress.start);
 Router.events.on("routeChangeComplete", NProgress.done);
@@ -50,13 +51,14 @@ export default function App({
     }
 
     initializeWSClient();
-    getWSClient().connect();
 
     return (
       <ErrorBoundary>
-        <Layout withSidebar>
-          <Component {...pageProps} />
-        </Layout>
+        <SWRConfig value={{ fetcher: Cfetch }}>
+          <Layout withSidebar>
+            <Component {...pageProps} />
+          </Layout>
+        </SWRConfig>
       </ErrorBoundary>
     );
   }
