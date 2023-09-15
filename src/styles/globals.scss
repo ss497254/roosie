@@ -224,8 +224,8 @@ input[type="range"]::-ms-thumb:hover {
 }
 
 input[type="number"],
-input[type="text"]:not(.custom-input),
-input[type="password"]:not(.custom-input) {
+input[type="text"],
+input[type="password"] {
   appearance: none;
   border-radius: 10px;
   border: var(--border-light);
@@ -236,12 +236,6 @@ input[type="password"]:not(.custom-input) {
   padding: 0 10px;
   max-width: 50%;
   font-family: inherit;
-}
-
-.field-required > label:after {
-  content: "*";
-  margin-left: 4px;
-  @apply text-red-500;
 }
 
 div.math {
@@ -349,6 +343,18 @@ pre {
   }
 }
 
+.one-line {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.field-required > label:after {
+  content: "*";
+  margin-left: 4px;
+  @apply text-red-500;
+}
+
 .border-light {
   border: var(--border-light);
 }
@@ -361,10 +367,8 @@ pre {
   box-shadow: var(--card-shadow);
 }
 
-.one-line {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+.bg-box {
+  background-color: rgb(0, 0, 0, 0.05);
 }
 
 .f {
