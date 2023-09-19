@@ -1,14 +1,31 @@
-import { useRef } from "react";
+import { useRef, useState, useEffect } from "react";
 
-export const useScrollToBottom = () => {
-  const ref = useRef<any>();
+export function useScrollToBottom() {
+  // for auto-scroll
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const [autoScroll, setAutoScroll] = useState(true);
+
+  function scrollDomToBottom() {
+    const dom = scrollRef.current;
+    if (dom) {
+      requestAnimationFrame(() => {
+        setAutoScroll(true);
+        dom.scrollTo(0, dom.scrollHeight);
+      });
+    }
+  }
+
+  // auto scroll
+  useEffect(() => {
+    if (autoScroll) {
+      scrollDomToBottom();
+    }
+  });
 
   return {
-    ref,
-    scroll: () => {
-      if (ref.current) {
-        ref.current.scrollTop = ref.current.scrollHeight;
-      }
-    },
+    scrollRef,
+    autoScroll,
+    setAutoScroll,
+    scrollDomToBottom,
   };
-};
+}
