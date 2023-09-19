@@ -1,34 +1,28 @@
 import Link from "next/link";
-import Router from "next/router";
-import { useState } from "react";
+import { useRouter } from "next/router";
 import { Path } from "src/constant";
 import { useDragSideBar } from "src/hooks/useDragSidebar";
-import { useHotKey } from "src/hooks/useHotKey";
 import LightIcon from "src/icons/light.svg";
-import { Theme, useAppConfig, useChatStore } from "src/store";
+import { Theme, useAppConfig } from "src/store";
+import { ChannelChatList, ChatList } from "./ChatList";
 import { IconButton } from "./button";
-import { ChatList, ChannelChatList } from "./chat-list";
 
-import AddIcon from "src/icons/add.svg";
+import Image from "next/image";
 import AutoIcon from "src/icons/auto.svg";
+import ChannelsIcon from "src/icons/chat.svg";
 import DarkIcon from "src/icons/dark.svg";
 import DragIcon from "src/icons/drag.svg";
 import MaskIcon from "src/icons/mask.svg";
-import ChannelsIcon from "src/icons/chat.svg";
 import SettingsIcon from "src/icons/settings.svg";
 import { WSClientStatus } from "./WSClientStatus";
 
-export type ChatTypes = "Masks" | "Channels";
-
 export function SideBar(props: { className?: string }) {
-  const chatStore = useChatStore();
-  const [chatType, setChatType] = useState<ChatTypes>("Masks");
+  const router = useRouter();
+  const isChannelRoute = router.pathname.startsWith("/c");
 
   const { onDragMouseDown, shouldNarrow } = useDragSideBar();
   const config = useAppConfig();
   const theme = config.theme;
-
-  useHotKey();
 
   return (
     <div
@@ -36,48 +30,40 @@ export function SideBar(props: { className?: string }) {
         shouldNarrow && "narrow-sidebar"
       }`}
     >
-      <div className="relative my-5">
-        <div className="sidebar-title">Chatoor</div>
-        <div className="sidebar-sub-title">Your all time partner.</div>
-        <div
-          className={[
-            shouldNarrow
-              ? "relative flex justify-center"
-              : "absolute right-0 top-0",
-            "no-dark",
-          ].join(" ")}
-        >
-          <WSClientStatus compact={shouldNarrow} />
-        </div>
+      <div className="f justify-between items-center py-1">
+        <Image alt="logo" src="/logo.png" width={40} height={40} />
+        <WSClientStatus compact={shouldNarrow} />
       </div>
+      <div className="pb-4">
+        <div className="font-semibold text-lg">Roosie</div>
+        <div className="text-sm -mt-1">Your all time partner.</div>
+      </div>
+      <div className="no-dark"></div>
 
       <div className="sidebar-header-bar">
         <IconButton
           icon={<MaskIcon />}
           text={shouldNarrow ? undefined : "Mask"}
           className="sidebar-bar-button"
-          type={chatType === "Masks" ? "highlight" : undefined}
-          onClick={() => {
-            Router.push("/");
-            setChatType("Masks");
-          }}
+          type={isChannelRoute ? undefined : "highlight"}
+          onClick={() => router.push("/")}
           shadow
         />
         <IconButton
           icon={<ChannelsIcon />}
           text={shouldNarrow ? undefined : "Channels"}
           className="sidebar-bar-button"
-          type={chatType === "Channels" ? "highlight" : undefined}
-          onClick={() => setChatType("Channels")}
+          type={isChannelRoute ? "highlight" : undefined}
+          onClick={() => router.push("/c")}
           shadow
         />
       </div>
 
       <div className="flex-grow overflow-x-hidden">
-        {chatType === "Masks" ? (
-          <ChatList narrow={shouldNarrow} />
-        ) : (
+        {isChannelRoute ? (
           <ChannelChatList narrow={shouldNarrow} />
+        ) : (
+          <ChatList narrow={shouldNarrow} />
         )}
       </div>
 
@@ -111,24 +97,6 @@ export function SideBar(props: { className?: string }) {
               shadow
             />
           </div>
-          <div className="flex-grow" />
-          {chatType === "Masks" && (
-            <div>
-              <IconButton
-                icon={<AddIcon />}
-                text={shouldNarrow ? undefined : "New Chat"}
-                onClick={() => {
-                  if (config.dontShowMaskSplashScreen) {
-                    chatStore.newSession();
-                    Router.push(Path.Chat);
-                  } else {
-                    Router.push(Path.NewChat);
-                  }
-                }}
-                shadow
-              />
-            </div>
-          )}
         </div>
       </div>
 
