@@ -24,7 +24,7 @@ export class ErrorBoundary extends React.Component<any, IErrorBoundaryState> {
 
   clearAndSaveData() {
     try {
-      downloadAs(JSON.stringify(localStorage), "chatoor-snapshot.json");
+      downloadAs(JSON.stringify(localStorage), "roosie-snapshot.json");
     } finally {
       localStorage.clear();
       location.reload();
