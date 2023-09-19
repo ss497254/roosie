@@ -23,15 +23,14 @@ import EditIcon from "src/icons/edit.svg";
 import MaxIcon from "src/icons/max.svg";
 import MinIcon from "src/icons/min.svg";
 import ResetIcon from "src/icons/reload.svg";
-import { useWSClientStatus } from "src/hooks/useWSClientStatus";
 import { getWSClient } from "src/lib/ws-client-store";
 
 export function Settings() {
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const config = useAppConfig();
   const updateConfig = useAppConfig((state) => state.update);
-  const apiClient = getWSClient();
-  const status = useWSClientStatus();
+  const wsClient = getWSClient();
+  const status = wsClient.getStore()((state) => state.status);
 
   const updateStore = useUpdateStore();
 
@@ -275,7 +274,7 @@ export function Settings() {
           <ListItem title="Connection status" subTitle={status}>
             <IconButton
               icon={<ResetIcon></ResetIcon>}
-              onClick={apiClient.reconnect.bind(apiClient)}
+              onClick={wsClient.reconnect.bind(wsClient)}
             />
           </ListItem>
           <ListItem
