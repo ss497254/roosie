@@ -35,8 +35,6 @@ import {
 
 import { autoGrowTextArea, copyToClipboard, selectOrCopy } from "src/utils";
 
-import dynamic from "next/dynamic";
-
 import { ChatControllerPool } from "src/client/controller";
 import Locale from "src/locales";
 import { Prompt, usePromptStore } from "src/store/prompt";
@@ -71,8 +69,9 @@ import {
 } from "src/ui";
 import { prettyObject } from "src/utils/format";
 import { ChatAction } from "./ChatAction";
-import { useScrollToBottom, useSubmitHandler } from "./common";
+import { useSubmitHandler } from "./common";
 import { Markdown } from "../markdown";
+import { useScrollToBottom } from "src/hooks/useScrollToBottom";
 
 export function SessionConfigModel(props: { onClose: () => void }) {
   const chatStore = useChatStore();
