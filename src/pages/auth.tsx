@@ -1,9 +1,9 @@
-/* eslint-disable @next/next/no-img-element */
 import Router from "next/router";
 import React, { useCallback } from "react";
 import { Button } from "src/ui/Buttons";
 import { useAccessStore } from "src/store";
 import { usePost } from "src/hooks/ApiHooks";
+import Image from "next/image";
 
 const Login = () => {
   const { run, loading, error } = usePost("/user/login");
@@ -33,10 +33,16 @@ const Login = () => {
 
   return (
     <form
-      className="p-6 md:p-8 rounded-2xl shadow-2xl space-y-5 flex-grow max-w-md border-light"
+      className="p-6 md:p-8 lg:p-10 rounded-2xl mx-4 shadow-2xl dark:shadow-slate-900 bg-white space-y-5 flex-grow max-w-md border-2 border-emerald-500"
       onSubmit={onSubmit}
     >
-      <img src="/logo.png" alt="logo" className="w-32 h-32 mx-auto mb-12" />
+      <Image
+        width={144}
+        height={144}
+        className="mx-auto mb-4 md:mb-8"
+        alt="logo"
+        src="/logo.png"
+      />
       <input
         required
         className="min-w-full h-12"
@@ -60,8 +66,10 @@ const Login = () => {
         type="submit"
         iconSize={28}
         loading={loading}
-        size="xl"
-        className={["w-full", error ? "shake" : ""].join(" ")}
+        size="lg"
+        className={["w-full text-lg font-medium", error ? "shake" : ""].join(
+          " ",
+        )}
       >
         Submit
       </Button>
