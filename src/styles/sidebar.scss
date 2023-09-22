@@ -15,7 +15,7 @@
     margin-bottom: 20px;
 
     .sidebar-bar-button {
-      flex-grow: 1;
+      flex: 1;
 
       &:not(:last-child) {
         margin-right: 10px;
@@ -72,18 +72,6 @@
   .mobile {
     display: block;
   }
-}
-
-.sidebar-title {
-  font-size: 20px;
-  font-weight: bold;
-  animation: slide-in ease 0.3s;
-}
-
-.sidebar-sub-title {
-  font-size: 12px;
-  font-weight: 400;
-  animation: slide-in ease 0.3s;
 }
 
 .chat-item {
@@ -240,6 +228,7 @@
 
 .sidebar-actions {
   display: inline-flex;
+  flex-grow: 1;
 }
 
 .sidebar-action:not(:last-child) {
