@@ -1,7 +1,9 @@
 import { SlotID } from "src/constant";
 import { useMobileScreen } from "../hooks/useMobileScreen";
 import { useAppConfig } from "../store";
-import { SideBar } from "./sidebar";
+import { SideBar } from "./Sidebar";
+import { cleanWSClient, getWSClient } from "src/lib/ws-client-store";
+import { useEffect } from "react";
 
 export function Layout({
   children,
@@ -10,13 +12,21 @@ export function Layout({
   const isMobileScreen = useMobileScreen();
   const tightBorder = useAppConfig((state) => state.tightBorder);
 
+  useEffect(() => {
+    getWSClient().connect();
+
+    return () => {
+      cleanWSClient();
+    };
+  }, []);
+
   return (
     <div
       className={`container ${
         tightBorder && !isMobileScreen ? "tight-container" : ""
       }`}
     >
-      {withSidebar && <SideBar className="sidebar-show" />}
+      {withSidebar && <SideBar />}
       <div className="window-content" id={SlotID.AppBody}>
         {children}
       </div>
