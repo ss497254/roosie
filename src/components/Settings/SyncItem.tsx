@@ -1,6 +1,6 @@
 import { List, ListItem } from "src/ui";
 import { useSyncStore } from "src/store";
-import { IconButton } from "src/components/button";
+import { IconButton } from "src/ui";
 
 import ResetIcon from "src/icons/reload.svg";
 

@@ -1,7 +1,4 @@
-import { Input, Modal } from "src/ui";
-
-import { IconButton } from "../button";
-
+import { IconButton, Input, Modal } from "src/ui";
 import { usePromptStore } from "src/store/prompt";
 
 export function EditPromptModal(props: { id: string; onClose: () => void }) {

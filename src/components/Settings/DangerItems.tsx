@@ -1,7 +1,5 @@
-import { List, ListItem, showConfirm } from "src/ui";
-
-import { useAccessStore, useAppConfig, useChatStore } from "../../store";
-import { IconButton } from "../button";
+import { IconButton, List, ListItem, showConfirm } from "src/ui";
+import { useAccessStore, useAppConfig, useChatStore } from "src/store";
 
 export function DangerItems() {
   const chatStore = useChatStore();
