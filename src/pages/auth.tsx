@@ -2,7 +2,7 @@ import Router from "next/router";
 import React, { useCallback } from "react";
 import { Button } from "src/ui/Buttons";
 import { useAccessStore } from "src/store";
-import { usePost } from "src/hooks/ApiHooks";
+import { usePost } from "src/hooks/useFetch";
 import Image from "next/image";
 
 const Login = () => {
