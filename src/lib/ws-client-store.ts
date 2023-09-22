@@ -10,15 +10,23 @@ export const getWSClient = () => {
 };
 
 export const initializeWSClient = () => {
-  const { user, token } = useAccessStore.getState();
   if (client) return;
 
   client = new WebSocketClient({
-    user: user!,
-    token,
-    getConnection: (token: string) =>
-      new WebSocket(`${useAppConfig.getState().wsURL!}?access_token=${token}`),
+    getConnection: () =>
+      new WebSocket(
+        `${useAppConfig.getState().wsURL!}?access_token=${
+          useAccessStore.getState().token
+        }`,
+      ),
   });
+};
 
-  client.addListener("*", console.log);
+export const cleanWSClient = () => {
+  if (client) {
+    client.disconnect();
+    client.removeAllListeners();
+
+    client = undefined;
+  }
 };
