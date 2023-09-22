@@ -1,7 +1,5 @@
 import * as React from "react";
 
-import styles from "./button.module.scss";
-
 export type ButtonType = "primary" | "danger" | "highlight" | null;
 
 export function IconButton(props: {
@@ -20,11 +18,10 @@ export function IconButton(props: {
   return (
     <button
       className={[
-        "clickable",
-        styles["icon-button"],
+        "clickable icon-button",
         props.bordered ? "border-light" : "",
         props.shadow ? "card-shadow" : "",
-        styles[props.type ?? ""],
+        props.type ?? "",
         props.text ? "!px-4" : "",
         props.className ?? "",
       ].join(" ")}
@@ -41,9 +38,7 @@ export function IconButton(props: {
         </div>
       )}
 
-      {props.text && (
-        <div className={styles["icon-button-text"]}>{props.text}</div>
-      )}
+      {props.text && <div className="icon-button-text">{props.text}</div>}
     </button>
   );
 }
