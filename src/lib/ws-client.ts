@@ -1,5 +1,4 @@
 import { EventEmitter2 } from "eventemitter2";
-import { IUser } from "src/types/IUser";
 import { StoreApi, UseBoundStore, create } from "zustand";
 
 export interface Connection extends EventTarget {
@@ -11,10 +10,7 @@ export interface Connection extends EventTarget {
 }
 
 export interface Props<T> {
-  user: IUser;
-  token: string;
-  retryOnFail?: boolean;
-  getConnection: (token: string) => T;
+  getConnection: () => T;
 }
 
 export interface State {
@@ -23,16 +19,13 @@ export interface State {
 }
 
 export class WebSocketClient<T extends Connection> extends EventEmitter2 {
-  private token: string;
-  user: IUser;
   connection?: T;
   store: UseBoundStore<StoreApi<State>>;
   isConnecting = false;
   isResolving = false;
-  retryOnFail;
-  getConnection: (token: string) => T;
+  getConnection: () => T;
 
-  constructor({ user, token, getConnection, retryOnFail = false }: Props<T>) {
+  constructor({ getConnection }: Props<T>) {
     super({
       wildcard: true,
       verboseMemoryLeak: true,
@@ -46,9 +39,6 @@ export class WebSocketClient<T extends Connection> extends EventEmitter2 {
     });
 
     this.store = create<State>(() => ({ status: "" }));
-    this.token = token;
-    this.user = user;
-    this.retryOnFail = retryOnFail;
     this.getConnection = getConnection;
   }
 
@@ -63,7 +53,7 @@ export class WebSocketClient<T extends Connection> extends EventEmitter2 {
       this.isConnecting = true;
       this.store.setState({ status: "connecting" });
 
-      this.connection = this.getConnection(this.token);
+      this.connection = this.getConnection();
       this.isConnecting = false;
       this.isResolving = false;
       this.store.setState({ status: "resolving" });
@@ -85,13 +75,11 @@ export class WebSocketClient<T extends Connection> extends EventEmitter2 {
     if (this.connection) this.disconnect();
 
     this.connect();
-    console.log("reconnecting");
   }
 
   disconnect() {
     this.connection?.close();
     this.connection = undefined;
-    console.log("disconnected");
   }
 
   private onmessage: NonNullable<Connection["onmessage"]> = (e) => {
@@ -104,20 +92,18 @@ export class WebSocketClient<T extends Connection> extends EventEmitter2 {
       const { type, ...data } = JSON.parse(e.data);
 
       this.emit(type, data);
-    } else console.warn(`invalid event data type ${typeof e.data}`);
+    } else console.warn(`invalid message event ${typeof e.data}`);
   };
 
   private onerror: NonNullable<Connection["onerror"]> = (e) => {
-    console.log("error", e);
+    console.warn("ws-client-error", e);
 
     this.store.setState({ status: "error", error: JSON.stringify({ ...e }) });
-    if (this.retryOnFail) this.reconnect();
   };
 
   private onclose: NonNullable<Connection["onclose"]> = (e) => {
-    console.log("close", e);
+    console.log("ws-client-close", e);
 
     this.store.setState({ status: "closed", error: JSON.stringify({ ...e }) });
-    if (this.retryOnFail) this.reconnect();
   };
 }
