@@ -19,7 +19,7 @@ export function ChatList(props: { narrow?: boolean }) {
           key={item.id}
           selected={idx === selectedIndex}
           onClick={() => {
-            Router.push(`/chat/${item.id}`);
+            Router.push(`/m/${item.id}`);
             selectSession(idx);
           }}
           narrow={props.narrow}
