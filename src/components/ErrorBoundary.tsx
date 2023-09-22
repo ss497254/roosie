@@ -1,8 +1,8 @@
 import React from "react";
-import { IconButton } from "./button";
+import { IconButton } from "src/ui/IconButtonWithText";
 import GithubIcon from "src/icons/github.svg";
 import ResetIcon from "src/icons/reload.svg";
-import { downloadAs } from "../utils";
+import { downloadAs } from "src/utils";
 import { showConfirm } from "src/ui";
 
 interface IErrorBoundaryState {
