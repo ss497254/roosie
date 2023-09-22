@@ -1,6 +1,7 @@
 import Router from "next/router";
 import { useEffect, useState } from "react";
 import { Path } from "src/constant";
+import { getWSClient } from "src/lib/ws-client-store";
 import {
   SubmitKey,
   useAccessStore,
@@ -8,25 +9,20 @@ import {
   useUpdateStore,
 } from "src/store";
 import { SearchService, usePromptStore } from "src/store/prompt";
-import { List, ListItem, Popover, Select } from "src/ui";
-import { IconButton } from "../button";
-import { Avatar, AvatarPicker } from "../emoji";
-import { ErrorBoundary } from "../error";
-import { InputRange } from "../input-range";
-import { ModelConfigList } from "../model-config";
+import { IconButton, InputRange, List, ListItem, Select } from "src/ui";
+import { ErrorBoundary } from "../ErrorBoundary";
+import { SidebarOpenBtn } from "../SidebarOpenBtn";
 import { DangerItems } from "./DangerItems";
+import { ModelConfigList } from "./ModelConfig";
 import { SyncItems } from "./SyncItem";
 import { UserPromptModal } from "./UserPromptModal";
 
-import CloseIcon from "src/icons/close.svg";
 import EditIcon from "src/icons/edit.svg";
 import MaxIcon from "src/icons/max.svg";
 import MinIcon from "src/icons/min.svg";
 import ResetIcon from "src/icons/reload.svg";
-import { getWSClient } from "src/lib/ws-client-store";
 
 export function Settings() {
-  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const config = useAppConfig();
   const updateConfig = useAppConfig((state) => state.update);
   const wsClient = getWSClient();
@@ -77,7 +73,7 @@ export function Settings() {
 
   return (
     <ErrorBoundary>
-      <div className="window-header" data-tauri-drag-region>
+      <div className="window-header">
         <div className="window-header-title">
           <div className="window-header-main-title">Settings</div>
           <div className="window-header-sub-title">All settings</div>
@@ -86,33 +82,16 @@ export function Settings() {
           <div className="window-action-button"></div>
           <div className="window-action-button"></div>
           <div className="window-action-button">
-            <IconButton
-              icon={<CloseIcon />}
-              onClick={() => Router.push(Path.Home)}
-              bordered
-            />
+            <SidebarOpenBtn />
           </div>
         </div>
       </div>
       <div className="p-5 overflow-auto">
         <List>
-          <ListItem title="Avatar">
-            <Popover
-              onClose={() => setShowEmojiPicker(false)}
-              content={
-                <AvatarPicker
-                  onEmojiClick={(avatar: string) => {
-                    updateConfig((config) => (config.avatar = avatar));
-                    setShowEmojiPicker(false);
-                  }}
-                />
-              }
-              open={showEmojiPicker}
-            >
-              <button onClick={() => setShowEmojiPicker(true)}>
-                <Avatar avatar={config.avatar} size={40} />
-              </button>
-            </Popover>
+          <ListItem title="Username">
+            <h2 className="font-semibold text-lg p-2">
+              {accessStore.user?.username}
+            </h2>
           </ListItem>
 
           <ListItem title="Send Key">
@@ -297,7 +276,7 @@ export function Settings() {
             <input
               type="text"
               value={config.wsURL}
-              placeholder="wss://server.com/websocket"
+              placeholder="wss://server.com/ws"
               onChange={(e) =>
                 updateConfig((config) => (config.wsURL = e.target.value))
               }
