@@ -1,21 +1,17 @@
-import { create } from "zustand";
-import { persist } from "zustand/middleware";
-
-import { trimTopic } from "../utils";
+import { nanoid } from "nanoid";
+import { getApiClient } from "src/lib/api-client-store";
 import { showToast } from "src/ui";
-import { ModelConfig, ModelType, useAppConfig } from "./config";
-import { createEmptyMask, Mask } from "./mask";
+import { create } from "zustand";
+import { RequestMessage } from "src/api-client/api";
 import {
   DEFAULT_INPUT_TEMPLATE,
   DEFAULT_SYSTEM_TEMPLATE,
-  StoreKey,
   SUMMARIZE_MODEL,
-} from "../constant";
-import { api, RequestMessage } from "../client/api";
-import { ChatControllerPool } from "../client/controller";
-import { prettyObject } from "../utils/format";
-import { estimateTokenLength } from "../utils/token";
-import { nanoid } from "nanoid";
+} from "src/constant";
+import { trimTopic } from "src/utils";
+import { estimateTokenLength } from "src/utils/estimate-token-length";
+import { ModelConfig, ModelType, useAppConfig } from "./config";
+import { Mask, createEmptyMask } from "./mask";
 
 export type ChatMessage = RequestMessage & {
   date: string;
@@ -379,7 +375,7 @@ export const useChatStore = create<ChatStore>()((set, get) => ({
     if (shouldInjectSystemPrompts) {
       console.log(
         "[Global System Prompt] ",
-        systemPrompts.at(0)?.content ?? "empty",
+        systemPrompts[0]?.content ?? "empty",
       );
     }
 
@@ -459,6 +455,7 @@ export const useChatStore = create<ChatStore>()((set, get) => ({
   summarizeSession() {
     const config = useAppConfig.getState();
     const session = get().currentSession();
+    const api = getApiClient();
 
     // remove error messages if any
     const messages = session.messages;
