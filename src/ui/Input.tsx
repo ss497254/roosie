@@ -1,5 +1,5 @@
-import React, { HTMLProps, forwardRef, useId, useState } from "react";
-import { IconButton } from "../components/button";
+import React, { HTMLProps, useState } from "react";
+import { IconButton } from "./IconButtonWithText";
 
 import EyeOffIcon from "src/icons/eye-off.svg";
 import EyeIcon from "src/icons/eye.svg";
@@ -27,12 +27,12 @@ export function PasswordInput(props: HTMLProps<HTMLInputElement>) {
       <IconButton
         icon={visible ? <EyeIcon /> : <EyeOffIcon />}
         onClick={changeVisibility}
-        className={"password-eye"}
+        className="password-eye"
       />
       <input
         {...props}
         type={visible ? "text" : "password"}
-        className={"password-input"}
+        className="password-input"
       />
     </div>
   );
@@ -79,20 +79,3 @@ export function InputRange({
 }
 
 export interface TextAreaProps extends React.ComponentPropsWithoutRef<"div"> {}
-
-export const ExpandingTextArea = forwardRef<HTMLDivElement, TextAreaProps>(
-  ({ className, ...props }, ref) => {
-    return (
-      <div
-        contentEditable
-        ref={ref}
-        className={[
-          "whitespace-pre-wrap text-sm resize-none min-h-[40px] before:text-neutral-500 scroll-thin focus:empty:before:content-['Start_typing...'] empty:before:content-['Send_message'] max-h-[320px] bg-box px-3 py-2 rounded overflow-auto w-full focus:outline-none",
-        ].join(" ")}
-        {...props}
-      />
-    );
-  },
-);
-
-ExpandingTextArea.displayName = "TextArea";
