@@ -1,69 +1,18 @@
-import { useEffect, useRef, useState } from "react";
-import { SlotID } from "src/constant";
-import { IconButton } from "src/ui/IconButtonWithText";
-import { Avatar } from "./Avatar";
-import styles from "./home.module.scss";
 import Router from "next/router";
+import { useEffect, useRef } from "react";
 import { useCommand } from "src/command";
 import { BUILTIN_MASK_STORE } from "src/masks";
 import { useChatStore } from "src/store";
 import { Mask, useMaskStore } from "src/store/mask";
-import { MaskAvatar } from "./Mask/Mask";
-import { SidebarOpenBtn } from "./SidebarOpenBtn";
+import { IconButton } from "src/ui/IconButtonWithText";
+import { Avatar } from "../Avatar";
+import { SidebarOpenBtn } from "../SidebarOpenBtn";
+import { MaskItem } from "./MaskItem";
+import styles from "./home.module.scss";
+import { useMaskGroup } from "./useMaskGroup";
 
 import EyeIcon from "src/icons/eye.svg";
 import LightningIcon from "src/icons/lightning.svg";
-
-function MaskItem(props: { mask: Mask; onClick?: () => void }) {
-  return (
-    <div className={styles["mask"]} onClick={props.onClick}>
-      <MaskAvatar mask={props.mask} />
-      <div className={styles["mask-name"] + " one-line"}>{props.mask.name}</div>
-    </div>
-  );
-}
-
-function useMaskGroup(masks: Mask[]) {
-  const [groups, setGroups] = useState<Mask[][]>([]);
-
-  useEffect(() => {
-    const computeGroup = () => {
-      const appBody = document.getElementById(SlotID.AppBody);
-      if (!appBody || masks.length === 0) return;
-
-      const rect = appBody.getBoundingClientRect();
-      const maxWidth = rect.width;
-      const maxHeight = rect.height * 0.6;
-      const maskItemWidth = 120;
-      const maskItemHeight = 50;
-
-      const randomMask = () => masks[Math.floor(Math.random() * masks.length)];
-      let maskIndex = 0;
-      const nextMask = () => masks[maskIndex++ % masks.length];
-
-      const rows = Math.ceil(maxHeight / maskItemHeight);
-      const cols = Math.ceil(maxWidth / maskItemWidth);
-
-      const newGroups = new Array(rows)
-        .fill(0)
-        .map((_, _i) =>
-          new Array(cols)
-            .fill(0)
-            .map((_, j) => (j < 1 || j > cols - 2 ? randomMask() : nextMask())),
-        );
-
-      setGroups(newGroups);
-    };
-
-    computeGroup();
-
-    window.addEventListener("resize", computeGroup);
-    return () => window.removeEventListener("resize", computeGroup);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  return groups;
-}
 
 export default function NewChat() {
   const chatStore = useChatStore();
