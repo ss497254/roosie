@@ -1,6 +1,5 @@
 import Router from "next/router";
 import { useEffect, useState } from "react";
-import { Path } from "src/constant";
 import { getWSClient } from "src/lib/ws-client-store";
 import {
   SubmitKey,
@@ -61,7 +60,7 @@ export function Settings() {
   useEffect(() => {
     const keydownEvent = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
-        Router.push(Path.Home);
+        Router.back();
       }
     };
     document.addEventListener("keydown", keydownEvent);
