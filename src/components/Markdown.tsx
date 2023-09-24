@@ -1,17 +1,16 @@
 import "katex/dist/katex.min.css";
 import mermaid from "mermaid";
-import { RefObject, useEffect, useRef, useState } from "react";
+import React, { RefObject, useEffect, useRef, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import RehypeHighlight from "rehype-highlight";
 import RehypeKatex from "rehype-katex";
 import RemarkBreaks from "remark-breaks";
 import RemarkGfm from "remark-gfm";
 import RemarkMath from "remark-math";
+import { showImageModal } from "src/ui";
+import { useDebouncedCallback } from "use-debounce";
 import { copyToClipboard } from "../utils";
 
-import { showImageModal } from "src/ui";
-import React from "react";
-import { useDebouncedCallback } from "use-debounce";
 import LoadingIcon from "src/icons/three-dots.svg";
 
 export function Mermaid(props: { code: string }) {
