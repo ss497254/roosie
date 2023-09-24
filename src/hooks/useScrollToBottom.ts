@@ -1,7 +1,12 @@
 import { useRef, useState, useEffect } from "react";
+import { getChannelStore } from "src/store/channel";
 
-export function useScrollToBottom() {
+export function useScrollToBottom(channel?: string) {
   // for auto-scroll
+  let newMessages;
+  if (channel)
+    newMessages = getChannelStore(channel)((state) => state.newMessages);
+
   const scrollRef = useRef<HTMLDivElement>(null);
   const [autoScroll, setAutoScroll] = useState(true);
 
@@ -15,12 +20,11 @@ export function useScrollToBottom() {
     }
   }
 
-  // auto scroll
   useEffect(() => {
     if (autoScroll) {
       scrollDomToBottom();
     }
-  });
+  }, [newMessages, autoScroll]);
 
   return {
     scrollRef,

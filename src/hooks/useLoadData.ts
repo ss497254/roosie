@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { api } from "src/client/api";
+import { getApiClient } from "src/lib/api-client-store";
 import { useAppConfig } from "src/store";
 
 export function useLoadData() {
@@ -7,6 +7,7 @@ export function useLoadData() {
 
   useEffect(() => {
     (async () => {
+      const api = getApiClient();
       const models = await api.llm.models();
       config.mergeModels(models);
     })().catch(console.warn);
