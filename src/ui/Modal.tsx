@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import { useEffect, useState } from "react";
 import { createRoot } from "react-dom/client";
-import { IconButton } from "../components/button";
+import { IconButton } from "./IconButtonWithText";
 
 import MaxIcon from "src/icons/max.svg";
 import MinIcon from "src/icons/min.svg";

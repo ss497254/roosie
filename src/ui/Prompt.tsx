@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { createRoot } from "react-dom/client";
-import { IconButton } from "../components/button";
+import { IconButton } from "./IconButtonWithText";
+import { Modal } from "./Modal";
+
 import CancelIcon from "src/icons/cancel.svg";
 import ConfirmIcon from "src/icons/confirm.svg";
-import { Modal } from "./Modal";
 
 function PromptInput(props: {
   value: string;
