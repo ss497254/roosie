@@ -1,20 +1,19 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { Path } from "src/constant";
 import LightIcon from "src/icons/light.svg";
 import { Theme, useAppConfig } from "src/store";
+import { IconButton } from "src/ui";
 import { ChannelChatList, ChatList } from "./ChatList";
-import { IconButton } from "../ui/IconButtonWithText";
-
 import Image from "next/image";
+import { useEffect } from "react";
+import { useSidebarDrawerStore } from "src/store/sidebar";
+import { WSClientStatus } from "./WSClientStatus";
+
 import ChannelsIcon from "src/icons/chat.svg";
+import CloseIcon from "src/icons/close.svg";
 import DarkIcon from "src/icons/dark.svg";
 import MaskIcon from "src/icons/mask.svg";
-import CloseIcon from "src/icons/close.svg";
 import SettingsIcon from "src/icons/settings.svg";
-import { WSClientStatus } from "./WSClientStatus";
-import { useSidebarDrawerStore } from "src/store/sidebar";
-import { useEffect } from "react";
 
 export function SideBar() {
   const router = useRouter();
@@ -66,7 +65,7 @@ export function SideBar() {
       <div className="sidebar-tail">
         <div className="sidebar-actions">
           <div className="sidebar-action">
-            <Link href={Path.Settings}>
+            <Link href="/settings">
               <IconButton icon={<SettingsIcon />} shadow />
             </Link>
           </div>
