@@ -14,7 +14,7 @@ import { useMaskGroup } from "./useMaskGroup";
 import EyeIcon from "src/icons/eye.svg";
 import LightningIcon from "src/icons/lightning.svg";
 
-export default function NewChat() {
+export default function Home() {
   const chatStore = useChatStore();
   const maskStore = useMaskStore();
 
