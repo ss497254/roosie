@@ -1,9 +1,9 @@
 export const ButtonTypes = {
-  default: "bg-primary hover:bg-secondary text-white",
-  info: "bg-blue-500 hover:bg-blue-600 text-white",
-  accent: "bg-indigo-600 hover:bg-indigo-500 text-white",
-  success: "bg-emerald-600 hover:bg-emerald-500 text-white",
-  danger: "bg-red-500 hover:bg-red-600 text-white",
-  outline: "border-light",
+  default: "bg-primary hover:bg-blue-500 text-zinc-50",
+  info: "bg-blue-500 hover:bg-blue-600 text-zinc-50",
+  accent: "bg-indigo-600 hover:bg-indigo-500 text-zinc-50",
+  success: "bg-emerald-600 hover:bg-emerald-500 text-zinc-50",
+  danger: "bg-red-500 hover:bg-red-600 text-zinc-50",
+  outline: "border-light bg-white",
   none: "",
 };

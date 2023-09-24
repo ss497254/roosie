@@ -10,7 +10,7 @@ export const BlockButton = ({
   ...props
 }: ButtonProps) => {
   const classes = [
-    "r c outline-none border-light text-black px-3 bg-[rgba(0,0,0,0.05)] hover:bg-gray",
+    "r c outline-none border-light text-black px-3 bg-box hover:bg-gray",
   ];
 
   if (className) {

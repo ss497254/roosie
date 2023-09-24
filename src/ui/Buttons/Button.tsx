@@ -4,8 +4,8 @@ import { ButtonTypes } from "./ButtonTypes";
 
 export const BtnSizes = {
   xs: "text-xs px-2.5 py-1",
-  sm: "text-sm leading-4 px-3 py-2",
-  md: "text-base px-5 py-2",
+  sm: "text-sm leading-4 px-2 md:px-3 py-1 md:py-2",
+  md: "text-base px-3 md:px-5 py-1 md:py-2",
   lg: "text-base px-6 py-2",
   xl: "text-lg px-7 py-3",
   none: "",
