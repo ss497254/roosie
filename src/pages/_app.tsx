@@ -1,11 +1,11 @@
-require("src/polyfill");
+import "src/polyfill";
 
 import { AppProps } from "next/app";
 import Router from "next/router";
 import { NextPageContext } from "next/types";
 import NProgress from "nprogress";
+import { ErrorBoundary } from "src/components/ErrorBoundary";
 import { Layout } from "src/components/Layout";
-import { ErrorBoundary } from "src/components/error";
 import { useIsHydrated } from "src/hooks/useIsHydarted";
 import { useLoadData } from "src/hooks/useLoadData";
 import { useTheme } from "src/hooks/useTheme";
@@ -19,10 +19,10 @@ import "src/styles/layout.scss";
 import "src/styles/markdown.scss";
 import "src/styles/nprogress.css";
 import "src/styles/sidebar.scss";
+import "src/styles/ui.scss";
 import "src/styles/window.scss";
 import { PageComponent } from "src/types/PageComponent";
 import { Loading } from "src/ui";
-import "src/ui/styles.scss";
 import { Cfetch } from "src/utils/fetch";
 import { SWRConfig } from "swr";
 
