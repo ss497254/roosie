@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import { LLMModel } from "../client/api";
+import { LLMModel } from "src/api-client/api";
 import {
   API_URL,
   DEFAULT_INPUT_TEMPLATE,
