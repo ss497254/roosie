@@ -1,5 +1,5 @@
 import React, { Fragment, useEffect, useMemo, useRef, useState } from "react";
-import { ChatControllerPool } from "src/api-client/controller";
+import { ChatControllerPool } from "src/api-client/chat-controller";
 import { ChatCommandPrefix, useChatCommand } from "src/hooks/useChatCommand";
 import { ExportMessageModal } from "src/components/Exporter/ExportMessageModal";
 import { MaskAvatar } from "src/components/Mask";
