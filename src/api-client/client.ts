@@ -1,5 +1,5 @@
 import { ModelType, useAccessStore } from "src/store";
-import { ChatGPTApi } from "./platforms/openai";
+import { ChatGPTApi } from "./openai";
 
 export const ROLES = ["system", "user", "assistant"] as const;
 export type MessageRole = (typeof ROLES)[number];
