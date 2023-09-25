@@ -1,21 +1,20 @@
-import Router from "next/router";
 import { useState } from "react";
-import { IconButton } from "src/components/button";
+import { IconButton } from "src/ui";
 import { useMobileScreen } from "src/hooks/useMobileScreen";
+import { useScrollToBottom } from "src/hooks/useScrollToBottom";
 import { useAppConfig } from "src/store";
 import { getChannelStore } from "src/store/channel";
 import { useDebouncedCallback } from "use-debounce";
 import { ChatAction } from "./ChatAction";
+import { MessageInput } from "./MessageInput";
 import { MessagesContainer } from "./MessagesContainer";
 import styles from "./chat.module.scss";
+import { SidebarOpenBtn } from "../SidebarOpenBtn";
 
-import { useScrollToBottom } from "src/hooks/useScrollToBottom";
 import BottomIcon from "src/icons/bottom.svg";
 import BreakIcon from "src/icons/break.svg";
 import MaxIcon from "src/icons/max.svg";
 import MinIcon from "src/icons/min.svg";
-import ReturnIcon from "src/icons/return.svg";
-import { MessageInputBar } from "./MessageInput";
 import ResetIcon from "src/icons/reload.svg";
 
 function ChatActions(props: {
@@ -23,7 +22,7 @@ function ChatActions(props: {
   hitBottom: boolean;
 }) {
   return (
-    <div className="absolute bottom-[72px] left-3 bg-transparent">
+    <div className="absolute right-3 -top-11 bg-transparent">
       {!props.hitBottom && (
         <ChatAction
           onClick={props.scrollToBottom}
@@ -42,15 +41,14 @@ function ChatActions(props: {
 }
 
 export const ChannelChat = ({ channel }: { channel: string }) => {
-  const totalMessages = getChannelStore(channel)(
-    (state) => state.totalMessages,
-  );
-  const clearMessages = getChannelStore(channel)(
-    (state) => state.clearMessages,
-  );
   const config = useAppConfig();
+  const store = getChannelStore(channel);
+  const totalMessages = store((state) => state.totalMessages);
+  const clearMessages = store((state) => state.clearMessages);
 
-  const { scrollRef, setAutoScroll, scrollDomToBottom } = useScrollToBottom();
+  const { scrollRef, setAutoScroll, scrollDomToBottom } =
+    useScrollToBottom(channel);
+
   const [hitBottom, setHitBottom] = useState(true);
   const isMobileScreen = useMobileScreen();
 
@@ -76,19 +74,6 @@ export const ChannelChat = ({ channel }: { channel: string }) => {
   return (
     <div className={styles.chat}>
       <div className="window-header">
-        {isMobileScreen && (
-          <div className="window-actions">
-            <div className={"window-action-button"}>
-              <IconButton
-                icon={<ReturnIcon />}
-                bordered
-                title="Go To Chat List"
-                onClick={() => Router.push("/")}
-              />
-            </div>
-          </div>
-        )}
-
         <div className={`window-header-title ${styles["chat-body-title"]}`}>
           <div
             className={`window-header-main-title ${styles["chat-body-main-title"]}`}
@@ -116,6 +101,9 @@ export const ChannelChat = ({ channel }: { channel: string }) => {
               />
             )}
           </div>
+          <div className="window-action-button">
+            <SidebarOpenBtn />
+          </div>
         </div>
       </div>
 
@@ -126,10 +114,10 @@ export const ChannelChat = ({ channel }: { channel: string }) => {
       >
         <MessagesContainer channel={channel} />
       </div>
-
-      <ChatActions scrollToBottom={scrollDomToBottom} hitBottom={hitBottom} />
-
-      <MessageInputBar channel={channel} />
+      <div className="relative">
+        <ChatActions scrollToBottom={scrollDomToBottom} hitBottom={hitBottom} />
+        <MessageInput channel={channel} />
+      </div>
     </div>
   );
 };
