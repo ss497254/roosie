@@ -1,7 +1,5 @@
 import Router from "next/router";
 import { useEffect, useRef } from "react";
-import { useCommand } from "src/command";
-import { BUILTIN_MASK_STORE } from "src/masks";
 import { useChatStore } from "src/store";
 import { Mask, useMaskStore } from "src/store/mask";
 import { IconButton } from "src/ui/IconButtonWithText";
@@ -29,17 +27,6 @@ export default function Home() {
       Router.push(`/m/${id}`);
     }, 10);
   };
-
-  useCommand({
-    mask: (id) => {
-      try {
-        const mask = maskStore.get(id) ?? BUILTIN_MASK_STORE.get(id);
-        startChat(mask ?? undefined);
-      } catch {
-        console.error("[New Chat] failed to create chat from mask id=", id);
-      }
-    },
-  });
 
   useEffect(() => {
     if (maskRef.current) {
