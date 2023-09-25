@@ -2,7 +2,7 @@ import { nanoid } from "nanoid";
 import { getApiClient } from "src/lib/api-client-store";
 import { showToast } from "src/ui";
 import { create } from "zustand";
-import { RequestMessage } from "src/api-client/api";
+import { RequestMessage } from "src/api-client";
 import {
   DEFAULT_INPUT_TEMPLATE,
   DEFAULT_SYSTEM_TEMPLATE,
@@ -12,7 +12,7 @@ import { trimTopic } from "src/utils";
 import { estimateTokenLength } from "src/utils/estimate-token-length";
 import { ModelConfig, ModelType, useAppConfig } from "./config";
 import { Mask, createEmptyMask } from "./mask";
-import { ChatControllerPool } from "src/api-client/controller";
+import { ChatControllerPool } from "src/api-client";
 import { prettyObject } from "src/utils/format";
 
 export type ChatMessage = RequestMessage & {

@@ -1,4 +1,4 @@
-import { ClientApi } from "src/api-client/api";
+import { ClientApi } from "src/api-client";
 
 let _apiClient: ClientApi;
 

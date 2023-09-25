@@ -5,7 +5,7 @@ import {
   OnDragEndResponder,
 } from "@hello-pangea/dnd";
 import { useState } from "react";
-import { ROLES } from "src/api-client/api";
+import { ROLES } from "src/api-client";
 import chatStyle from "src/components/Chat/chat.module.scss";
 import { ChatMessage, createMessage } from "src/store";
 import { IconButton, Input, Select } from "src/ui";
