@@ -12,6 +12,8 @@ import { trimTopic } from "src/utils";
 import { estimateTokenLength } from "src/utils/estimate-token-length";
 import { ModelConfig, ModelType, useAppConfig } from "./config";
 import { Mask, createEmptyMask } from "./mask";
+import { ChatControllerPool } from "src/api-client/controller";
+import { prettyObject } from "src/utils/format";
 
 export type ChatMessage = RequestMessage & {
   date: string;
@@ -269,6 +271,7 @@ export const useChatStore = create<ChatStore>()((set, get) => ({
     const recentMessages = get().getMessagesWithMemory();
     const sendMessages = recentMessages.concat(userMessage);
     const messageIndex = get().currentSession().messages.length + 1;
+    const api = getApiClient();
 
     // save user's and bot's message
     get().updateCurrentSession((session) => {
@@ -283,56 +286,55 @@ export const useChatStore = create<ChatStore>()((set, get) => ({
     });
     botMessage.streaming = false;
     botMessage.content = content;
-    get().onNewMessage(botMessage);
 
     // make request
-    // api.llm.chat({
-    //   messages: sendMessages,
-    //   config: { ...modelConfig, stream: true },
-    //   onUpdate(message) {
-    //     botMessage.streaming = true;
-    //     if (message) {
-    //       botMessage.content = message;
-    //     }
-    //     get().updateCurrentSession((session) => {
-    //       session.messages = session.messages.concat();
-    //     });
-    //   },
-    //   onFinish(message) {
-    //     botMessage.streaming = false;
-    //     if (message) {
-    //       botMessage.content = message;
-    //       get().onNewMessage(botMessage);
-    //     }
-    //     ChatControllerPool.remove(session.id, botMessage.id);
-    //   },
-    //   onError(error) {
-    //     const isAborted = error.message.includes("aborted");
-    //     botMessage.content +=
-    //       "\n\n" +
-    //       prettyObject({
-    //         error: true,
-    //         message: error.message,
-    //       });
-    //     botMessage.streaming = false;
-    //     userMessage.isError = !isAborted;
-    //     botMessage.isError = !isAborted;
-    //     get().updateCurrentSession((session) => {
-    //       session.messages = session.messages.concat();
-    //     });
-    //     ChatControllerPool.remove(session.id, botMessage.id ?? messageIndex);
+    api.llm.chat({
+      messages: sendMessages,
+      config: { ...modelConfig, stream: true },
+      onUpdate(message) {
+        botMessage.streaming = true;
+        if (message) {
+          botMessage.content = message;
+        }
+        get().updateCurrentSession((session) => {
+          session.messages = session.messages.concat();
+        });
+      },
+      onFinish(message) {
+        botMessage.streaming = false;
+        if (message) {
+          botMessage.content = message;
+          get().onNewMessage(botMessage);
+        }
+        ChatControllerPool.remove(session.id, botMessage.id);
+      },
+      onError(error) {
+        const isAborted = error.message.includes("aborted");
+        botMessage.content +=
+          "\n\n" +
+          prettyObject({
+            error: true,
+            message: error.message,
+          });
+        botMessage.streaming = false;
+        userMessage.isError = !isAborted;
+        botMessage.isError = !isAborted;
+        get().updateCurrentSession((session) => {
+          session.messages = session.messages.concat();
+        });
+        ChatControllerPool.remove(session.id, botMessage.id ?? messageIndex);
 
-    //     console.error("[Chat] failed ", error);
-    //   },
-    //   onController(controller) {
-    //     // collect controller for stop/retry
-    //     ChatControllerPool.addController(
-    //       session.id,
-    //       botMessage.id ?? messageIndex,
-    //       controller,
-    //     );
-    //   },
-    // });
+        console.error("[Chat] failed ", error);
+      },
+      onController(controller) {
+        // collect controller for stop/retry
+        ChatControllerPool.addController(
+          session.id,
+          botMessage.id ?? messageIndex,
+          controller,
+        );
+      },
+    });
   },
 
   getMemoryPrompt() {
