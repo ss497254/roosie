@@ -38,7 +38,7 @@ export const createEmptyMask = () =>
     avatar: DEFAULT_MASK_AVATAR,
     name: DEFAULT_TOPIC,
     context: [],
-    syncGlobalConfig: true, // use global config as default
+    syncGlobalConfig: false, // use global config as default
     modelConfig: { ...useAppConfig.getState().modelConfig },
 
     builtin: false,
@@ -68,6 +68,7 @@ export const useMaskStore = create<MaskStore>()(
         const masks = get().masks;
         const mask = masks[id];
         if (!mask) return;
+
         const updateMask = { ...mask };
         updater(updateMask);
         masks[id] = updateMask;
