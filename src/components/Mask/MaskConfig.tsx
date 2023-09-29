@@ -1,42 +1,37 @@
 import { useState } from "react";
-import { ChatConfigStore, Mask, useAppConfig } from "src/store";
+import { Mask, useAppConfig } from "src/store";
 import { Updater } from "src/types/Mask";
 import { List, ListItem, Popover, showConfirm } from "src/ui";
 import { ModelConfigList } from "../Settings/ModelConfig";
 import { ContextPrompts } from "./ContextPrompts";
 import { MaskAvatar } from "./MaskAvatar";
 
-export function MaskConfig(props: {
+interface Props {
   mask: Mask;
   updateMask: Updater<Mask>;
   extraListItems?: JSX.Element;
   readonly?: boolean;
   shouldSyncFromGlobal?: boolean;
-}) {
+}
+
+export function MaskConfig({
+  mask,
+  readonly,
+  updateMask,
+  extraListItems,
+  shouldSyncFromGlobal,
+}: Props) {
   const [showPicker, setShowPicker] = useState(false);
-
-  const updateConfig = (updater: (config: ChatConfigStore) => void) => {
-    if (props.readonly) return;
-
-    const { modelConfig } = props.mask;
-    updater({ modelConfig } as ChatConfigStore);
-    props.updateMask((mask) => {
-      mask.modelConfig = modelConfig;
-      // if user changed current session mask, it will disable auto sync
-      mask.syncGlobalConfig = false;
-    });
-  };
-
   const globalConfig = useAppConfig();
 
   return (
     <>
       <ContextPrompts
-        context={props.mask.context}
+        context={mask.context}
         updateContext={(updater) => {
-          const context = props.mask.context.slice();
+          const context = mask.context.slice();
           updater(context);
-          props.updateMask((mask) => (mask.context = context));
+          updateMask((mask) => (mask.context = context));
         }}
       />
 
@@ -55,16 +50,16 @@ export function MaskConfig(props: {
               onClick={() => setShowPicker(true)}
               style={{ cursor: "pointer" }}
             >
-              <MaskAvatar mask={props.mask} />
+              <MaskAvatar mask={mask} size={40} />
             </div>
           </Popover>
         </ListItem>
         <ListItem title="Bot Name">
           <input
             type="text"
-            value={props.mask.name}
+            value={mask.name}
             onInput={(e) =>
-              props.updateMask((mask) => {
+              updateMask((mask) => {
                 mask.name = e.currentTarget.value;
               })
             }
@@ -76,23 +71,23 @@ export function MaskConfig(props: {
         >
           <input
             type="checkbox"
-            checked={props.mask.hideContext}
+            checked={mask.hideContext}
             onChange={(e) => {
-              props.updateMask((mask) => {
+              updateMask((mask) => {
                 mask.hideContext = e.currentTarget.checked;
               });
             }}
           ></input>
         </ListItem>
 
-        {props.shouldSyncFromGlobal ? (
+        {shouldSyncFromGlobal ? (
           <ListItem
             title="Use Global Config"
             subTitle="Use global config in this chat"
           >
             <input
               type="checkbox"
-              checked={props.mask.syncGlobalConfig}
+              checked={mask.syncGlobalConfig}
               onChange={async (e) => {
                 const checked = e.currentTarget.checked;
                 if (
@@ -101,12 +96,12 @@ export function MaskConfig(props: {
                     "Confirm to override custom config with global config?",
                   ))
                 ) {
-                  props.updateMask((mask) => {
+                  updateMask((mask) => {
                     mask.syncGlobalConfig = checked;
                     mask.modelConfig = { ...globalConfig.modelConfig };
                   });
                 } else if (!checked) {
-                  props.updateMask((mask) => {
+                  updateMask((mask) => {
                     mask.syncGlobalConfig = checked;
                   });
                 }
@@ -116,8 +111,19 @@ export function MaskConfig(props: {
         ) : null}
       </List>
 
-      <ModelConfigList updateConfig={updateConfig} />
-      {props.extraListItems}
+      <ModelConfigList
+        modelConfig={mask.modelConfig}
+        updateModelConfig={(updater) => {
+          if (readonly) return;
+
+          updateMask((mask) => {
+            const modelConfig = { ...mask.modelConfig };
+            updater(modelConfig);
+            mask.modelConfig = modelConfig;
+          });
+        }}
+      />
+      {extraListItems && <List>{extraListItems}</List>}
     </>
   );
 }
