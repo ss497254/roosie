@@ -1,3 +1,4 @@
+import { IChannel } from "src/types/IChannel";
 import { IUser } from "src/types/IUser";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
@@ -5,6 +6,7 @@ import { persist } from "zustand/middleware";
 export interface AccessControlStore {
   token: string;
   user?: IUser;
+  channels?: IChannel[];
   hideBalanceQuery: Boolean;
 }
 
