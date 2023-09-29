@@ -3,6 +3,7 @@ import { create } from "zustand";
 import { BUILTIN_MASKS } from "../masks";
 import { ChatMessage, DEFAULT_TOPIC } from "./chat";
 import { ModelConfig, useAppConfig } from "./config";
+import { persist } from "zustand/middleware";
 
 export type Mask = {
   id: string;
@@ -44,61 +45,65 @@ export const createEmptyMask = () =>
     createdAt: Date.now(),
   }) as Mask;
 
-export const useMaskStore = create<MaskStore>()((set, get) => ({
-  ...DEFAULT_MASK_STATE,
+export const useMaskStore = create<MaskStore>()(
+  persist(
+    (set, get) => ({
+      ...DEFAULT_MASK_STATE,
 
-  create(mask) {
-    const masks = get().masks;
-    const id = nanoid();
-    masks[id] = {
-      ...createEmptyMask(),
-      ...mask,
-      id,
-      builtin: false,
-    };
+      create(mask) {
+        const masks = get().masks;
+        const id = nanoid();
+        masks[id] = {
+          ...createEmptyMask(),
+          ...mask,
+          id,
+          builtin: false,
+        };
 
-    set(() => ({ masks }));
+        set(() => ({ masks }));
 
-    return masks[id];
-  },
-  update(id, updater) {
-    const masks = get().masks;
-    const mask = masks[id];
-    if (!mask) return;
-    const updateMask = { ...mask };
-    updater(updateMask);
-    masks[id] = updateMask;
-    set(() => ({ masks }));
-  },
-  delete(id) {
-    const masks = get().masks;
-    delete masks[id];
-    set(() => ({ masks }));
-  },
+        return masks[id];
+      },
+      update(id, updater) {
+        const masks = get().masks;
+        const mask = masks[id];
+        if (!mask) return;
+        const updateMask = { ...mask };
+        updater(updateMask);
+        masks[id] = updateMask;
+        set(() => ({ masks }));
+      },
+      delete(id) {
+        const masks = get().masks;
+        delete masks[id];
+        set(() => ({ masks }));
+      },
 
-  get(id) {
-    return get().masks[id ?? 1145141919810];
-  },
-  getAll() {
-    const userMasks = Object.values(get().masks).sort(
-      (a, b) => b.createdAt - a.createdAt,
-    );
-    const config = useAppConfig.getState();
-    // if (config.hideBuiltinMasks) return userMasks;
-    const buildinMasks = BUILTIN_MASKS.map(
-      (m) =>
-        ({
-          ...m,
-          modelConfig: {
-            ...config.modelConfig,
-            ...m.modelConfig,
-          },
-        }) as Mask,
-    );
+      get(id) {
+        return get().masks[id ?? 1145141919810];
+      },
+      getAll() {
+        const userMasks = Object.values(get().masks).sort(
+          (a, b) => b.createdAt - a.createdAt,
+        );
+        const config = useAppConfig.getState();
+        const buildinMasks = BUILTIN_MASKS.map(
+          (m) =>
+            ({
+              ...m,
+              modelConfig: {
+                ...config.modelConfig,
+                ...m.modelConfig,
+              },
+            }) as Mask,
+        );
 
-    return userMasks.concat(buildinMasks);
-  },
-  search(text) {
-    return Object.values(get().masks);
-  },
-}));
+        return userMasks.concat(buildinMasks);
+      },
+      search(text) {
+        return Object.values(get().masks);
+      },
+    }),
+    { name: "mask-store" },
+  ),
+);
