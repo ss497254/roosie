@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
 import LightIcon from "src/icons/light.svg";
-import { Theme, useAppConfig } from "src/store";
+import { Theme, useAccessStore, useAppConfig } from "src/store";
 import { IconButton } from "src/ui";
 import { ChannelChatList, ChatList } from "./ChatList";
 import Image from "next/image";
@@ -17,7 +17,8 @@ import SettingsIcon from "src/icons/settings.svg";
 
 export function SideBar() {
   const router = useRouter();
-  const isChannelRoute = router.pathname.startsWith("/c");
+  const { admin } = useAccessStore((state) => state.user!);
+  const isMaskRoute = router.pathname.startsWith("/m");
 
   const config = useAppConfig();
   const theme = config.theme;
@@ -40,26 +41,30 @@ export function SideBar() {
       </div>
 
       <div className="sidebar-header-bar">
-        <IconButton
-          icon={<MaskIcon />}
-          text="Mask"
-          className="sidebar-bar-button"
-          type={isChannelRoute ? undefined : "highlight"}
-          onClick={() => router.push("/")}
-          shadow
-        />
-        <IconButton
-          icon={<ChannelsIcon />}
-          text="Channels"
-          className="sidebar-bar-button"
-          type={isChannelRoute ? "highlight" : undefined}
-          onClick={() => router.push("/c")}
-          shadow
-        />
+        {admin && (
+          <>
+            <IconButton
+              icon={<ChannelsIcon />}
+              text="Channels"
+              className="sidebar-bar-button"
+              type={isMaskRoute ? undefined : "highlight"}
+              onClick={() => router.push("/")}
+              shadow
+            />
+            <IconButton
+              icon={<MaskIcon />}
+              text="Mask"
+              className="sidebar-bar-button"
+              type={isMaskRoute ? "highlight" : undefined}
+              onClick={() => router.push("/m")}
+              shadow
+            />
+          </>
+        )}
       </div>
 
       <div className="flex-grow overflow-x-hidden">
-        {isChannelRoute ? <ChannelChatList /> : <ChatList />}
+        {isMaskRoute && admin ? <ChatList /> : <ChannelChatList />}
       </div>
 
       <div className="sidebar-tail">
