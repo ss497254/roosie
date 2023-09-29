@@ -1,18 +1,9 @@
 import { useState } from "react";
-import { Mask, ModelConfig, useAppConfig } from "src/store";
+import { ChatConfigStore, Mask, useAppConfig } from "src/store";
 import { Updater } from "src/types/Mask";
 import { List, ListItem, Popover, showConfirm } from "src/ui";
 import { ModelConfigList } from "../Settings/ModelConfig";
 import { ContextPrompts } from "./ContextPrompts";
-
-import AddIcon from "src/icons/add.svg";
-import CopyIcon from "src/icons/copy.svg";
-import DeleteIcon from "src/icons/delete.svg";
-import DownloadIcon from "src/icons/download.svg";
-import DragIcon from "src/icons/drag.svg";
-import EditIcon from "src/icons/edit.svg";
-import EyeIcon from "src/icons/eye.svg";
-import UploadIcon from "src/icons/upload.svg";
 import { MaskAvatar } from "./MaskAvatar";
 
 export function MaskConfig(props: {
@@ -24,13 +15,13 @@ export function MaskConfig(props: {
 }) {
   const [showPicker, setShowPicker] = useState(false);
 
-  const updateConfig = (updater: (config: ModelConfig) => void) => {
+  const updateConfig = (updater: (config: ChatConfigStore) => void) => {
     if (props.readonly) return;
 
-    const config = { ...props.mask.modelConfig };
-    updater(config);
+    const { modelConfig } = props.mask;
+    updater({ modelConfig } as ChatConfigStore);
     props.updateMask((mask) => {
-      mask.modelConfig = config;
+      mask.modelConfig = modelConfig;
       // if user changed current session mask, it will disable auto sync
       mask.syncGlobalConfig = false;
     });
@@ -125,13 +116,8 @@ export function MaskConfig(props: {
         ) : null}
       </List>
 
-      <List>
-        <ModelConfigList
-          modelConfig={{ ...props.mask.modelConfig }}
-          updateConfig={updateConfig}
-        />
-        {props.extraListItems}
-      </List>
+      <ModelConfigList updateConfig={updateConfig} />
+      {props.extraListItems}
     </>
   );
 }
