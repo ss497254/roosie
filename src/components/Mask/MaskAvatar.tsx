@@ -1,10 +1,10 @@
 import { Mask, DEFAULT_MASK_AVATAR } from "src/store";
 import { Avatar } from "../Avatar";
 
-export function MaskAvatar(props: { mask: Mask }) {
-  return props.mask.avatar !== DEFAULT_MASK_AVATAR ? (
-    <Avatar />
+export function MaskAvatar({ mask, size }: { mask: Mask; size?: number }) {
+  return mask.avatar !== DEFAULT_MASK_AVATAR ? (
+    <Avatar size={size} />
   ) : (
-    <Avatar model={props.mask.modelConfig.model} />
+    <Avatar model={mask.modelConfig.model} size={size} />
   );
 }
