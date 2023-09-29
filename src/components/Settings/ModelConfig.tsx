@@ -1,10 +1,22 @@
-import { ModalConfigValidator, useAppConfig } from "src/store";
+import { ModalConfigValidator, ModelConfig, useAppConfig } from "src/store";
 import { InputRange, List, ListItem, Select } from "src/ui";
 
+const updateModelConfigDefault = (
+  updater: (modelConfig: ModelConfig) => void,
+) => {
+  useAppConfig.getState().update((config) => {
+    const modelConfig = { ...config.modelConfig };
+
+    updater(modelConfig);
+    config.modelConfig = modelConfig;
+  });
+};
+
 export function ModelConfigList({
-  updateConfig = useAppConfig.getState().update,
+  updateModelConfig = updateModelConfigDefault,
+  modelConfig = useAppConfig.getState().modelConfig,
 }) {
-  const modelConfig = useAppConfig((state) => state.modelConfig);
+  console.log("model cofng rend");
 
   return (
     <List>
@@ -12,8 +24,8 @@ export function ModelConfigList({
         <Select
           value={modelConfig.model}
           onChange={(e) => {
-            updateConfig(
-              ({ modelConfig }) =>
+            updateModelConfig(
+              (modelConfig) =>
                 (modelConfig.model = ModalConfigValidator.model(
                   e.currentTarget.value,
                 )),
@@ -40,8 +52,8 @@ export function ModelConfigList({
           max="1" // lets limit it to 0-1
           step="0.1"
           onChange={(e) => {
-            updateConfig(
-              ({ modelConfig }) =>
+            updateModelConfig(
+              (modelConfig) =>
                 (modelConfig.temperature = ModalConfigValidator.temperature(
                   e.currentTarget.valueAsNumber,
                 )),
@@ -59,8 +71,8 @@ export function ModelConfigList({
           max="1"
           step="0.1"
           onChange={(e) => {
-            updateConfig(
-              ({ modelConfig }) =>
+            updateModelConfig(
+              (modelConfig) =>
                 (modelConfig.top_p = ModalConfigValidator.top_p(
                   e.currentTarget.valueAsNumber,
                 )),
@@ -78,8 +90,8 @@ export function ModelConfigList({
           max={100000}
           value={modelConfig.max_tokens}
           onChange={(e) =>
-            updateConfig(
-              ({ modelConfig }) =>
+            updateModelConfig(
+              (modelConfig) =>
                 (modelConfig.max_tokens = ModalConfigValidator.max_tokens(
                   e.currentTarget.valueAsNumber,
                 )),
@@ -97,8 +109,8 @@ export function ModelConfigList({
           max="2"
           step="0.1"
           onChange={(e) => {
-            updateConfig(
-              ({ modelConfig }) =>
+            updateModelConfig(
+              (modelConfig) =>
                 (modelConfig.presence_penalty =
                   ModalConfigValidator.presence_penalty(
                     e.currentTarget.valueAsNumber,
@@ -118,8 +130,8 @@ export function ModelConfigList({
           max="2"
           step="0.1"
           onChange={(e) => {
-            updateConfig(
-              ({ modelConfig }) =>
+            updateModelConfig(
+              (modelConfig) =>
                 (modelConfig.frequency_penalty =
                   ModalConfigValidator.frequency_penalty(
                     e.currentTarget.valueAsNumber,
@@ -137,8 +149,8 @@ export function ModelConfigList({
           type="checkbox"
           checked={modelConfig.enableInjectSystemPrompts}
           onChange={(e) =>
-            updateConfig(
-              ({ modelConfig }) =>
+            updateModelConfig(
+              (modelConfig) =>
                 (modelConfig.enableInjectSystemPrompts =
                   e.currentTarget.checked),
             )
@@ -154,9 +166,8 @@ export function ModelConfigList({
           type="text"
           value={modelConfig.template}
           onChange={(e) =>
-            updateConfig(
-              ({ modelConfig }) =>
-                (modelConfig.template = e.currentTarget.value),
+            updateModelConfig(
+              (modelConfig) => (modelConfig.template = e.currentTarget.value),
             )
           }
         ></input>
@@ -173,8 +184,8 @@ export function ModelConfigList({
           max="64"
           step="1"
           onChange={(e) =>
-            updateConfig(
-              ({ modelConfig }) =>
+            updateModelConfig(
+              (modelConfig) =>
                 (modelConfig.historyMessageCount = e.target.valueAsNumber),
             )
           }
@@ -191,8 +202,8 @@ export function ModelConfigList({
           max={4000}
           value={modelConfig.compressMessageLengthThreshold}
           onChange={(e) =>
-            updateConfig(
-              ({ modelConfig }) =>
+            updateModelConfig(
+              (modelConfig) =>
                 (modelConfig.compressMessageLengthThreshold =
                   e.currentTarget.valueAsNumber),
             )
@@ -204,8 +215,8 @@ export function ModelConfigList({
           type="checkbox"
           checked={modelConfig.sendMemory}
           onChange={(e) =>
-            updateConfig(
-              ({ modelConfig }) =>
+            updateModelConfig(
+              (modelConfig) =>
                 (modelConfig.sendMemory = e.currentTarget.checked),
             )
           }
