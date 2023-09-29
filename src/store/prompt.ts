@@ -22,6 +22,8 @@ export interface PromptStore {
   update: (id: string, updater: (prompt: Prompt) => void) => void;
 
   getUserPrompts: () => Prompt[];
+
+  loadPrompts: () => void;
 }
 
 export const SearchService = {
@@ -133,22 +135,8 @@ export const usePromptStore = create<PromptStore>()(
         }
         return SearchService.search(text) as Prompt[];
       },
-    }),
-    {
-      name: "propmt-store",
-      version: 3,
 
-      migrate(state, version) {
-        const newState = JSON.parse(JSON.stringify(state)) as PromptStore;
-
-        if (version < 3) {
-          Object.values(newState.prompts).forEach((p) => (p.id = nanoid()));
-        }
-
-        return newState;
-      },
-
-      onRehydrateStorage(state) {
+      loadPrompts() {
         const PROMPT_URL = "./prompts.json";
 
         type PromptList = Array<[string, string]>;
@@ -156,8 +144,7 @@ export const usePromptStore = create<PromptStore>()(
         fetch(PROMPT_URL)
           .then((res) => res.json())
           .then((res: { en: PromptList }) => {
-            const userPrompts =
-              usePromptStore.getState().getUserPrompts() ?? [];
+            const userPrompts = get().getUserPrompts() ?? [];
 
             const allPromptsForSearch = res.en
               .map(
@@ -175,6 +162,9 @@ export const usePromptStore = create<PromptStore>()(
             SearchService.init(allPromptsForSearch, userPrompts);
           });
       },
+    }),
+    {
+      name: "propmt-store",
     },
   ),
 );

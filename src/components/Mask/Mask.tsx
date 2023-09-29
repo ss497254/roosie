@@ -14,7 +14,7 @@ import { MaskConfig } from "./MaskConfig";
 import styles from "./mask.module.scss";
 
 import AddIcon from "src/icons/add.svg";
-import CopyIcon from "src/icons/copy.svg";
+import ConfirmIcon from "src/icons/confirm.svg";
 import DeleteIcon from "src/icons/delete.svg";
 import DownloadIcon from "src/icons/download.svg";
 import EditIcon from "src/icons/edit.svg";
@@ -191,25 +191,22 @@ export function MaskPage() {
             onClose={closeMaskModal}
             actions={[
               <IconButton
-                icon={<DownloadIcon />}
-                text="Download"
-                key="export"
                 bordered
-                onClick={() =>
-                  downloadAs(
-                    JSON.stringify(editingMask),
-                    `${editingMask.name}.json`,
-                  )
-                }
+                text="Cancel"
+                key="cancel"
+                icon={<DeleteIcon />}
+                onClick={async () => {
+                  maskStore.delete(editingMask.id);
+                  setEditingMaskId(undefined);
+                }}
               />,
               <IconButton
-                key="copy"
-                icon={<CopyIcon />}
                 bordered
-                text="Clone"
+                key="done"
+                type="primary"
+                text="Done"
+                icon={<ConfirmIcon />}
                 onClick={() => {
-                  Router.push("/mask");
-                  maskStore.create(editingMask);
                   setEditingMaskId(undefined);
                 }}
               />,
