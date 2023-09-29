@@ -3,11 +3,8 @@ import { ChatItem } from "./ChatItem";
 import Router from "next/router";
 
 export function ChatList(props: { narrow?: boolean }) {
-  const [sessions, selectedIndex, selectSession] = useChatStore((state) => [
-    state.sessions,
-    state.currentSessionIndex,
-    state.selectSession,
-  ]);
+  const { selectSession, sessions, currentSessionIndex, deleteSession } =
+    useChatStore();
 
   return (
     <div className="chat-list animate-slide-in-top">
@@ -17,7 +14,8 @@ export function ChatList(props: { narrow?: boolean }) {
           time={new Date(item.lastUpdate).toLocaleString()}
           count={item.messages.length}
           key={item.id}
-          selected={idx === selectedIndex}
+          onDelete={() => deleteSession(idx)}
+          selected={idx === currentSessionIndex}
           onClick={() => {
             Router.push(`/m/${item.id}`);
             selectSession(idx);
