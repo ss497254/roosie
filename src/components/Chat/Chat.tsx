@@ -196,7 +196,6 @@ export const Chat = () => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(measure, [userInput]);
 
-  // chat commands shortcuts
   const chatCommands = useChatCommand({
     prev: () => chatStore.nextSession(-1),
     next: () => chatStore.nextSession(1),
@@ -286,9 +285,7 @@ export const Chat = () => {
         }
       });
 
-      // auto sync mask config from global config
       if (session.mask.syncGlobalConfig) {
-        console.log("[Mask] syncing from global, name = ", session.mask.name);
         session.mask.modelConfig = { ...config.modelConfig };
       }
     });
@@ -707,7 +704,6 @@ export const Chat = () => {
             scrollToBottom={scrollToBottom}
             hitBottom={hitBottom}
             showPromptHints={() => {
-              // Click again to close
               if (promptHints.length > 0) {
                 setPromptHints([]);
                 return;

@@ -55,18 +55,15 @@ export function SessionConfigModel(props: { onClose: () => void }) {
             updater(mask);
             chatStore.updateCurrentSession((session) => (session.mask = mask));
           }}
-          shouldSyncFromGlobal
           extraListItems={
             session.mask.modelConfig.sendMemory ? (
               <ListItem
                 title={`Memory Prompt (${session.lastSummarizeIndex} of ${session.messages.length})`}
                 subTitle={session.memoryPrompt || "Nothing yet."}
               ></ListItem>
-            ) : (
-              <></>
-            )
+            ) : undefined
           }
-        ></MaskConfig>
+        />
       </Modal>
     </div>
   );
