@@ -38,9 +38,6 @@ export const DEFAULT_CONFIG = {
   apiURL: API_URL,
   wsURL: WS_URL,
 
-  dontShowMaskSplashScreen: false, // dont show splash screen when create chat
-  hideBuiltinMasks: false, // dont add builtin masks
-
   customModels: "",
   models: DEFAULT_MODELS as any as LLMModel[],
 
