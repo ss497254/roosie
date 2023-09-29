@@ -1,88 +1,58 @@
 import Router from "next/router";
 import { useEffect, useRef } from "react";
-import { useChatStore } from "src/store";
-import { Mask, useMaskStore } from "src/store/mask";
-import { IconButton } from "src/ui/IconButtonWithText";
+import { useAccessStore } from "src/store";
 import { Avatar } from "../Avatar";
 import { SidebarOpenBtn } from "../SidebarOpenBtn";
-import { MaskItem } from "./MaskItem";
 import styles from "./home.module.scss";
-import { useMaskGroup } from "./useMaskGroup";
 
-import EyeIcon from "src/icons/eye.svg";
-import LightningIcon from "src/icons/lightning.svg";
+import { ChannelItem } from "./ChannelItem";
+import { useChannelGroup } from "./useChannelGroup";
 
-export default function Home() {
-  const chatStore = useChatStore();
-  const maskStore = useMaskStore();
+export function Home() {
+  const channels = useAccessStore((state) => state.channels!);
+  const groups = useChannelGroup(channels);
 
-  const masks = maskStore.getAll();
-  const groups = useMaskGroup(masks);
-
-  const maskRef = useRef<HTMLDivElement>(null);
-
-  const startChat = (mask?: Mask) => {
-    setTimeout(() => {
-      const { id } = chatStore.newSession(mask);
-      Router.push(`/m/${id}`);
-    }, 10);
-  };
+  const channelRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (maskRef.current) {
-      maskRef.current.scrollLeft =
-        (maskRef.current.scrollWidth - maskRef.current.clientWidth) / 2;
+    if (channelRef.current) {
+      channelRef.current.scrollLeft =
+        (channelRef.current.scrollWidth - channelRef.current.clientWidth) / 2;
     }
   }, [groups]);
 
   return (
-    <div className={styles["new-chat"]}>
-      <div className={styles["mask-header"]}>
+    <div className="h-full flex flex-col items-center justify-end relative bg-gradient-to-b from-white to-neutral-700/20 dark:to-neutral-800">
+      <div className={styles["header"]}>
         <SidebarOpenBtn />
       </div>
-      <div className={styles["mask-cards"]}>
-        <div className={styles["mask-card"]}>
-          <Avatar size={24} />
+      <div className={styles["cards"]}>
+        <div className={styles["card"]}>
+          <Avatar size={50} src="/images/girl-1.png" />
         </div>
-        <div className={styles["mask-card"]}>
-          <Avatar size={24} />
+        <div className={styles["card"]}>
+          <Avatar size={50} src="/logo.png" />
         </div>
-        <div className={styles["mask-card"]}>
-          <Avatar size={24} />
+        <div className={styles["card"]}>
+          <Avatar size={50} src="/images/girl-2.png" />
         </div>
       </div>
 
-      <div className={styles["title"]}>Pick a Mask</div>
-      <div className={styles["sub-title"]}>
-        Mask is a preconfigured reusable template.
-      </div>
-      <div className={styles["actions"]}>
-        <IconButton
-          text="Find more"
-          onClick={() => Router.push("/c")}
-          icon={<EyeIcon />}
-          bordered
-          shadow
-        />
+      <div className={styles["title"]}>Pick a Channel</div>
+      <div className={styles["sub-title"]}>and start chatting.</div>
 
-        <IconButton
-          text="Just Start"
-          onClick={() => startChat()}
-          icon={<LightningIcon />}
-          type="primary"
-          shadow
-          className={styles["skip"]}
-        />
-      </div>
-
-      <div className={styles["masks"]} ref={maskRef}>
-        {groups.map((masks, i) => (
-          <div key={i} className={styles["mask-row"]}>
-            {masks.map((mask, index) => (
-              <MaskItem
+      <div className={styles["channels"]} ref={channelRef}>
+        {groups.map((channels, i) => (
+          <div key={i} className={styles["channel-row"]}>
+            {channels.map((channel, index) => (
+              <ChannelItem
                 key={index}
-                mask={mask}
-                onClick={() => startChat(mask)}
+                channel={channel}
+                onClick={() =>
+                  setTimeout(() => {
+                    Router.push(`/c/${channel.name}`);
+                  }, 10)
+                }
               />
             ))}
           </div>
