@@ -82,7 +82,7 @@ export class ClientApi {
 }
 
 export function getHeaders() {
-  const accessStore = useAccessStore.getState();
+  const { token } = useAccessStore.getState();
   let headers: Record<string, string> = {
     "Content-Type": "application/json",
     "x-requested-with": "XMLHttpRequest",
@@ -91,8 +91,8 @@ export function getHeaders() {
   const makeBearer = (token: string) => `Bearer ${token.trim()}`;
   const validString = (x: string) => x && x.length > 0;
 
-  if (validString(accessStore.token)) {
-    headers.Authorization = makeBearer(accessStore.token);
+  if (validString(token)) {
+    headers.Authorization = makeBearer(token);
   }
 
   return headers;

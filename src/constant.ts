@@ -1,5 +1,4 @@
 export const RUNTIME_CONFIG_DOM = "danger-runtime-config";
-export const DEFAULT_API_HOST = "https://roosie.vercel.app/api/proxy";
 export const isServer = typeof window === "undefined";
 
 export const API_URL = process.env.NEXT_PUBLIC_API_URL;
@@ -13,13 +12,6 @@ export enum SlotID {
 export enum FileName {
   Masks = "masks.json",
   Prompts = "prompts.json",
-}
-
-export enum StoreKey {
-  Config = "app-config",
-  Prompt = "prompt-store",
-  Update = "chat-update",
-  Sync = "sync",
 }
 
 export const MAX_SIDEBAR_WIDTH = 500;
