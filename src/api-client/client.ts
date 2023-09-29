@@ -1,4 +1,4 @@
-import { ModelType, useAccessStore } from "src/store";
+import { ModelType } from "src/store";
 import { ChatGPTApi } from "./openai";
 
 export const ROLES = ["system", "user", "assistant"] as const;
@@ -81,8 +81,7 @@ export class ClientApi {
   masks() {}
 }
 
-export function getHeaders() {
-  const { token } = useAccessStore.getState();
+export function getHeaders(token?: string) {
   let headers: Record<string, string> = {
     "Content-Type": "application/json",
     "x-requested-with": "XMLHttpRequest",
@@ -91,7 +90,7 @@ export function getHeaders() {
   const makeBearer = (token: string) => `Bearer ${token.trim()}`;
   const validString = (x: string) => x && x.length > 0;
 
-  if (validString(token)) {
+  if (token && validString(token)) {
     headers.Authorization = makeBearer(token);
   }
 
