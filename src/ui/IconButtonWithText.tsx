@@ -2,43 +2,44 @@ import * as React from "react";
 
 export type ButtonType = "primary" | "danger" | "highlight" | null;
 
-export function IconButton(props: {
-  onClick?: () => void;
+interface Props
+  extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "type"> {
   icon?: JSX.Element;
   type?: ButtonType;
   text?: string;
   bordered?: boolean;
   shadow?: boolean;
-  className?: string;
-  title?: string;
-  disabled?: boolean;
-  tabIndex?: number;
-  autoFocus?: boolean;
-}) {
+}
+
+export function IconButton({
+  bordered,
+  shadow,
+  type,
+  text,
+  className,
+  icon,
+  ...props
+}: Props) {
   return (
     <button
       className={[
         "clickable icon-button",
-        props.bordered ? "border-light" : "",
-        props.shadow ? "card-shadow" : "",
-        props.type ?? "",
-        props.text ? "!px-4" : "",
-        props.className ?? "",
+        bordered ? "border-light" : "",
+        shadow ? "card-shadow" : "",
+        type ?? "",
+        text ? "!px-4" : "",
+        className ?? "",
       ].join(" ")}
-      onClick={props.onClick}
-      title={props.title}
-      disabled={props.disabled}
       role="button"
-      tabIndex={props.tabIndex}
-      autoFocus={props.autoFocus}
+      {...props}
     >
-      {props.icon && (
-        <div className={`h-4 w-4 c ${props.type === "primary" && "no-dark"}`}>
-          {props.icon}
+      {icon && (
+        <div className={`h-4 w-4 c ${type === "primary" && "no-dark"}`}>
+          {icon}
         </div>
       )}
 
-      {props.text && <div className="icon-button-text">{props.text}</div>}
+      {text && <div className="icon-button-text">{text}</div>}
     </button>
   );
 }
