@@ -1,1 +1,1 @@
-export * as default from "./Home";
+export * from "./Home";
