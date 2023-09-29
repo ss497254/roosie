@@ -158,16 +158,7 @@ export const useChatStore = create<ChatStore>()(
         const session = createEmptySession();
 
         if (mask) {
-          const config = useAppConfig.getState();
-          const globalModelConfig = config.modelConfig;
-
-          session.mask = {
-            ...mask,
-            modelConfig: {
-              ...globalModelConfig,
-              ...mask.modelConfig,
-            },
-          };
+          session.mask = mask;
           session.topic = mask.name;
         }
 
