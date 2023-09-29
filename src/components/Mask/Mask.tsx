@@ -4,17 +4,16 @@ import { FileName } from "src/constant";
 import { BUILTIN_MASK_STORE } from "src/masks";
 import { useChatStore } from "src/store";
 import { Mask, useMaskStore } from "src/store/mask";
-import { Modal, showConfirm } from "src/ui";
+import { showConfirm } from "src/ui";
 import { downloadAs, readFromFile } from "src/utils";
 import { IconButton } from "../../ui/IconButtonWithText";
 import { ErrorBoundary } from "../ErrorBoundary";
 import { SidebarOpenBtn } from "../SidebarOpenBtn";
+import { EditMaskConfigModal } from "./EditMaskConfigModal";
 import { MaskAvatar } from "./MaskAvatar";
-import { MaskConfig } from "./MaskConfig";
 import styles from "./mask.module.scss";
 
 import AddIcon from "src/icons/add.svg";
-import ConfirmIcon from "src/icons/confirm.svg";
 import DeleteIcon from "src/icons/delete.svg";
 import DownloadIcon from "src/icons/download.svg";
 import EditIcon from "src/icons/edit.svg";
@@ -46,9 +45,6 @@ export function MaskPage() {
   };
 
   const [editingMaskId, setEditingMaskId] = useState<string | undefined>();
-  const editingMask =
-    maskStore.get(editingMaskId) ?? BUILTIN_MASK_STORE.get(editingMaskId);
-  const closeMaskModal = () => setEditingMaskId(undefined);
 
   const downloadAll = () => {
     downloadAs(JSON.stringify(masks), FileName.Masks);
@@ -182,45 +178,14 @@ export function MaskPage() {
         </div>
       </div>
 
-      {editingMask && (
-        <div className="modal-mask">
-          <Modal
-            title={`Edit Prompt Template ${
-              editingMask?.builtin ? "(readonly)" : ""
-            }`}
-            onClose={closeMaskModal}
-            actions={[
-              <IconButton
-                bordered
-                text="Cancel"
-                key="cancel"
-                icon={<DeleteIcon />}
-                onClick={async () => {
-                  maskStore.delete(editingMask.id);
-                  setEditingMaskId(undefined);
-                }}
-              />,
-              <IconButton
-                bordered
-                key="done"
-                type="primary"
-                text="Done"
-                icon={<ConfirmIcon />}
-                onClick={() => {
-                  setEditingMaskId(undefined);
-                }}
-              />,
-            ]}
-          >
-            <MaskConfig
-              mask={editingMask}
-              updateMask={(updater) =>
-                maskStore.update(editingMaskId!, updater)
-              }
-              readonly={editingMask.builtin}
-            />
-          </Modal>
-        </div>
+      {editingMaskId && (
+        <EditMaskConfigModal
+          mask={
+            maskStore.get(editingMaskId) ??
+            BUILTIN_MASK_STORE.get(editingMaskId)!
+          }
+          onClose={() => setEditingMaskId(undefined)}
+        />
       )}
     </ErrorBoundary>
   );
