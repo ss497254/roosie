@@ -53,11 +53,6 @@ export function Settings() {
   const [shouldShowPromptModal, setShowPromptModal] = useState(false);
 
   useEffect(() => {
-    // checkUsage();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  useEffect(() => {
     const keydownEvent = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
         Router.back();
@@ -78,8 +73,6 @@ export function Settings() {
           <div className="window-header-sub-title">All settings</div>
         </div>
         <div className="window-actions">
-          <div className="window-action-button"></div>
-          <div className="window-action-button"></div>
           <div className="window-action-button">
             <SidebarOpenBtn />
           </div>
