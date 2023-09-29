@@ -5,7 +5,6 @@ import {
   API_URL,
   DEFAULT_INPUT_TEMPLATE,
   DEFAULT_MODELS,
-  StoreKey,
   WS_URL,
 } from "../constant";
 
@@ -125,7 +124,7 @@ export const useAppConfig = create<ChatConfigStore>()(
       },
     }),
     {
-      name: StoreKey.Config,
+      name: "app-config",
       version: 1,
     },
   ),

@@ -1,7 +1,6 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import Fuse from "fuse.js";
-import { StoreKey } from "../constant";
 import { nanoid } from "nanoid";
 
 export interface Prompt {
@@ -136,7 +135,7 @@ export const usePromptStore = create<PromptStore>()(
       },
     }),
     {
-      name: StoreKey.Prompt,
+      name: "propmt-store",
       version: 3,
 
       migrate(state, version) {

@@ -1,7 +1,6 @@
 import { Updater } from "../types/Mask";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import { StoreKey } from "../constant";
 
 export interface WebDavConfig {
   server: string;
@@ -76,7 +75,7 @@ export const useSyncStore = create<SyncStore>()(
       },
     }),
     {
-      name: StoreKey.Sync,
+      name: "sync",
       version: 1,
     },
   ),
