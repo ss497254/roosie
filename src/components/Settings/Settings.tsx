@@ -8,8 +8,11 @@ import { GeneralItem } from "./GeneralItem";
 import { ModelConfigList } from "./ModelConfig";
 import { SyncItems } from "./SyncItem";
 import { ZConfig } from "./ZConfig";
+import { useAccessStore } from "src/store";
 
 export function Settings() {
+  const user = useAccessStore((state) => state.user);
+
   useEffect(() => {
     const keydownEvent = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
@@ -40,8 +43,8 @@ export function Settings() {
         <GeneralItem />
         <ChatItem />
         <ZConfig />
-        <SyncItems />
-        <ModelConfigList />
+        {user!.admin && <SyncItems />}
+        {user!.admin && <ModelConfigList />}
         <DangerItems />
       </div>
     </ErrorBoundary>
