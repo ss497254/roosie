@@ -32,7 +32,9 @@ export function SideBar() {
   return (
     <div className={`sidebar ${open && "sidebar-show"}`}>
       <div className="f justify-between items-center py-1">
-        <Image alt="logo" src="/logo.png" width={40} height={40} />
+        <Link href="/">
+          <Image alt="logo" src="/logo.png" width={40} height={40} />
+        </Link>
         <WSClientStatus />
       </div>
       <div className="pb-4">
