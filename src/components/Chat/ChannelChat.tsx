@@ -12,7 +12,6 @@ import styles from "./chat.module.scss";
 import { SidebarOpenBtn } from "../SidebarOpenBtn";
 
 import BottomIcon from "src/icons/bottom.svg";
-import BreakIcon from "src/icons/break.svg";
 import MaxIcon from "src/icons/max.svg";
 import MinIcon from "src/icons/min.svg";
 import ResetIcon from "src/icons/reload.svg";
@@ -30,12 +29,6 @@ function ChatActions(props: {
           icon={<BottomIcon />}
         />
       )}
-
-      <ChatAction
-        text="Clear context"
-        icon={<BreakIcon />}
-        onClick={() => {}}
-      />
     </div>
   );
 }
