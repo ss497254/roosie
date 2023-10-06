@@ -13,10 +13,22 @@ export function Layout({
   const tightBorder = useAppConfig((state) => state.tightBorder);
 
   useEffect(() => {
-    getWSClient().connect();
+    const client = getWSClient();
 
+    client.connect();
+
+    function listner() {
+      if (client.getStore().getState().status === "connected") return;
+
+      client.reconnect();
+    }
+
+    window.addEventListener("focus", listner);
+    window.addEventListener("online", listner);
     return () => {
       cleanWSClient();
+      window.removeEventListener("focus", listner);
+      window.removeEventListener("online", listner);
     };
   }, []);
 
