@@ -2,6 +2,7 @@ import { StoreApi, UseBoundStore, create } from "zustand";
 import { IMessage } from "src/types/IMessage";
 import { getWSClient } from "src/lib/ws-client-store";
 import { Cfetch } from "src/utils/fetch";
+import { showToast } from "src/ui";
 
 export interface IChannelToast {
   type: "error" | "info";
@@ -56,7 +57,10 @@ export const getChannelStore = (channel: string) => {
 
           return true;
         }
-      } catch (e) {
+      } catch (e: any) {
+        showToast("Message not sent", {
+          text: e.message || e.name,
+        });
         console.warn(e);
       }
 
@@ -108,7 +112,10 @@ export const getChannelStore = (channel: string) => {
             totalMessages: totalMessages + res.data.length,
           });
         }
-      } catch (e) {
+      } catch (e: any) {
+        showToast("Unable to load messages", {
+          text: e.message || e.name,
+        });
         console.warn(e);
       }
 
