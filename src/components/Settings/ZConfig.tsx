@@ -4,7 +4,7 @@ import {
   useOpenaiConfig,
   useUpdateStore,
 } from "src/store";
-import { IconButton, List, ListItem } from "src/ui";
+import { IconButton, List, ListItem, PasswordInput } from "src/ui";
 
 import { useState } from "react";
 import ResetIcon from "src/icons/reload.svg";
@@ -75,12 +75,11 @@ export function ZConfig() {
       </ListItem>
 
       <ListItem title="Openai Key" subTitle="Your openai key">
-        <input
-          type="text"
+        <PasswordInput
           value={openaiKey}
           placeholder="sk-******************"
           onChange={(e) => setOpenaiKey(e.target.value)}
-        ></input>
+        />
       </ListItem>
 
       {!accessStore.hideBalanceQuery ? (
