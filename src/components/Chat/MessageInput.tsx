@@ -45,7 +45,7 @@ export const MessageInput: React.FC<Props> = ({ channel }) => {
     return () => element.removeEventListener("keydown", fn);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [channel]);
 
   return (
     <div className="flex items-end p-3 pr-4 border-t-light">
