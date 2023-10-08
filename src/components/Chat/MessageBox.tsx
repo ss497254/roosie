@@ -22,7 +22,7 @@ export const MessageBox: React.FC<props> = ({
   return (
     <div
       className={[
-        "w-[80%] max-w-3xl p-3 whitespace-pre-wrap bg-box my-2 relative rounded-lg outline-none border-light dark:text-neutral-50",
+        "w-[90%] md:w-[80%] max-w-3xl p-3 whitespace-pre-wrap bg-box my-2 relative rounded-lg outline-none border-light dark:text-neutral-50",
         dirClassNames[dir],
       ].join(" ")}
     >

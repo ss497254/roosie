@@ -81,8 +81,8 @@ export const ChannelChat = ({ channel }: { channel: string }) => {
           <div className="window-action-button">
             <IconButton bordered icon={<ResetIcon />} onClick={clearMessages} />
           </div>
-          <div className="window-action-button">
-            {showMaxIcon && (
+          {showMaxIcon && (
+            <div className="window-action-button">
               <IconButton
                 bordered
                 icon={config.tightBorder ? <MinIcon /> : <MaxIcon />}
@@ -92,8 +92,8 @@ export const ChannelChat = ({ channel }: { channel: string }) => {
                   );
                 }}
               />
-            )}
-          </div>
+            </div>
+          )}
           <div className="window-action-button">
             <SidebarOpenBtn />
           </div>
