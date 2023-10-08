@@ -22,7 +22,7 @@ import {
   useChatStore,
 } from "src/store";
 import { usePromptStore } from "src/store/prompt";
-import { Selector, showToast } from "src/ui";
+import { Selector, showPrompt, showToast } from "src/ui";
 import { IconButton } from "src/ui/IconButtonWithText";
 import { autoGrowTextArea, copyToClipboard, selectOrCopy } from "src/utils";
 import { prettyObject } from "src/utils/format";
@@ -46,7 +46,7 @@ import StopIcon from "src/icons/pause.svg";
 import PinIcon from "src/icons/pin.svg";
 import PromptIcon from "src/icons/prompt.svg";
 import ResetIcon from "src/icons/reload.svg";
-import RenameIcon from "src/icons/rename.svg";
+import EditIcon from "src/icons/rename.svg";
 import RobotIcon from "src/icons/robot.svg";
 import SendWhiteIcon from "src/icons/send-white.svg";
 import ExportIcon from "src/icons/share.svg";
@@ -524,7 +524,7 @@ export const Chat = () => {
           {!isMobileScreen && (
             <div className="window-action-button">
               <IconButton
-                icon={<RenameIcon />}
+                icon={<EditIcon />}
                 bordered
                 onClick={() => setIsEditingMessage(true)}
               />
@@ -632,6 +632,29 @@ export const Chat = () => {
                                 icon={<CopyIcon />}
                                 onClick={() => copyToClipboard(message.content)}
                               />
+                              {isUser && (
+                                <ChatAction
+                                  text="Edit"
+                                  icon={<EditIcon />}
+                                  onClick={async () => {
+                                    const newMessage = await showPrompt(
+                                      "Edit Message",
+                                      message.content,
+                                      10,
+                                    );
+                                    chatStore.updateCurrentSession(
+                                      (session) => {
+                                        const m = session.mask.context
+                                          .concat(session.messages)
+                                          .find((m) => m.id === message.id);
+                                        if (m) {
+                                          m.content = newMessage;
+                                        }
+                                      },
+                                    );
+                                  }}
+                                />
+                              )}
                             </>
                           )}
                         </div>
