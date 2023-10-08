@@ -2,7 +2,6 @@
   top: 0;
   width: var(--sidebar-width);
   box-sizing: border-box;
-  padding: 20px;
   background-color: var(--secondary);
   display: flex;
   flex-direction: column;
@@ -21,37 +20,6 @@
         margin-right: 10px;
       }
     }
-  }
-
-  &:hover,
-  &:active {
-    .sidebar-drag {
-      background-color: rgba($color: #000000, $alpha: 0.01);
-
-      svg {
-        opacity: 0.2;
-      }
-    }
-  }
-}
-
-.sidebar-drag {
-  $width: 14px;
-
-  position: absolute;
-  top: 0;
-  right: 0;
-  height: 100%;
-  width: $width;
-  background-color: rgba($color: #000000, $alpha: 0);
-  cursor: ew-resize;
-  transition: all ease 0.3s;
-  display: flex;
-  align-items: center;
-
-  svg {
-    opacity: 0;
-    margin-left: -2px;
   }
 }
 
@@ -141,96 +109,4 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-}
-
-.narrow-sidebar {
-  .sidebar-title,
-  .sidebar-sub-title {
-    display: none;
-  }
-
-  .sidebar-header-bar {
-    flex-direction: column;
-
-    .sidebar-bar-button {
-      &:not(:last-child) {
-        margin-right: 0;
-        margin-bottom: 10px;
-      }
-    }
-  }
-
-  .chat-item {
-    padding: 0;
-    min-height: 50px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    transition: all ease 0.3s;
-    overflow: hidden;
-
-    &:hover {
-      .chat-item-narrow {
-        transform: scale(0.7) translateX(-50%);
-      }
-    }
-  }
-
-  .chat-item-narrow {
-    line-height: 0;
-    font-weight: lighter;
-    color: var(--black);
-    transform: translateX(0);
-    transition: all ease 0.3s;
-    padding: 4px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-
-    .chat-item-avatar {
-      display: flex;
-      justify-content: center;
-      opacity: 0.2;
-      position: absolute;
-      transform: scale(4);
-    }
-
-    .chat-item-narrow-count {
-      font-size: 24px;
-      font-weight: bolder;
-      text-align: center;
-      color: var(--primary);
-      opacity: 0.6;
-    }
-  }
-
-  .sidebar-tail {
-    flex-direction: column-reverse;
-    align-items: center;
-
-    .sidebar-actions {
-      flex-direction: column-reverse;
-      align-items: center;
-
-      .sidebar-action {
-        margin-right: 0;
-        margin-top: 15px;
-      }
-    }
-  }
-}
-
-.sidebar-tail {
-  display: flex;
-  justify-content: space-between;
-  padding-top: 20px;
-}
-
-.sidebar-actions {
-  display: inline-flex;
-  flex-grow: 1;
-}
-
-.sidebar-action:not(:last-child) {
-  margin-right: 15px;
 }
