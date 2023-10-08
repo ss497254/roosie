@@ -15,7 +15,9 @@ export function Input(props: InputProps) {
   );
 }
 
-export function PasswordInput(props: HTMLProps<HTMLInputElement>) {
+export function PasswordInput(
+  props: React.InputHTMLAttributes<HTMLInputElement>,
+) {
   const [visible, setVisible] = useState(false);
 
   function changeVisibility() {
