@@ -21,10 +21,8 @@ export function useScrollToBottom(channel?: string) {
   }
 
   useEffect(() => {
-    if (autoScroll) {
-      scrollDomToBottom();
-    }
-  }, [newMessages, autoScroll]);
+    scrollDomToBottom();
+  }, [newMessages]);
 
   return {
     scrollRef,
