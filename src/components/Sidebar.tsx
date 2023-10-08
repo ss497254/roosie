@@ -5,7 +5,7 @@ import { Theme, useAccessStore, useAppConfig } from "src/store";
 import { IconButton } from "src/ui";
 import { ChannelChatList, ChatList } from "./ChatList";
 import Image from "next/image";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useSidebarDrawerStore } from "src/store/sidebar";
 import { WSClientStatus } from "./WSClientStatus";
 
@@ -18,7 +18,9 @@ import SettingsIcon from "src/icons/settings.svg";
 export function SideBar() {
   const router = useRouter();
   const { admin } = useAccessStore((state) => state.user!);
-  const isMaskRoute = router.pathname.startsWith("/m");
+  const [isMaskRoute, setIsMaskRoute] = useState(
+    window.location.pathname.startsWith("/m"),
+  );
 
   const config = useAppConfig();
   const theme = config.theme;
@@ -27,21 +29,18 @@ export function SideBar() {
   useEffect(() => {
     open && toggleOpen();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [router.pathname]);
+  }, [router.asPath]);
 
   return (
-    <div className={`sidebar ${open && "sidebar-show"}`}>
-      <div className="f justify-between items-center py-1">
+    <div className={`sidebar [&>*]:px-5 ${open && "sidebar-show"}`}>
+      <div className="f justify-between items-center mb-1 mt-5">
         <Link href="/">
           <Image alt="logo" src="/logo.png" width={40} height={40} />
         </Link>
         <WSClientStatus />
       </div>
-      <div className="pb-4">
-        <div className="font-semibold text-lg">Roosie</div>
-        <div className="text-sm -mt-1">Your all time partner.</div>
-      </div>
-
+      <div className="font-semibold text-lg">Roosie</div>
+      <div className="text-sm -mt-1 mb-3">Your all time partner.</div>
       <div className="sidebar-header-bar">
         {admin && (
           <>
@@ -50,7 +49,10 @@ export function SideBar() {
               text="Channels"
               className="sidebar-bar-button"
               type={isMaskRoute ? undefined : "highlight"}
-              onClick={() => router.push("/")}
+              onClick={() => {
+                router.push("/");
+                setIsMaskRoute(false);
+              }}
               shadow
             />
             <IconButton
@@ -58,7 +60,10 @@ export function SideBar() {
               text="Mask"
               className="sidebar-bar-button"
               type={isMaskRoute ? "highlight" : undefined}
-              onClick={() => router.push("/m")}
+              onClick={() => {
+                router.push("/m");
+                setIsMaskRoute(true);
+              }}
               shadow
             />
           </>
@@ -69,30 +74,24 @@ export function SideBar() {
         {isMaskRoute && admin ? <ChatList /> : <ChannelChatList />}
       </div>
 
-      <div className="sidebar-tail">
-        <div className="sidebar-actions">
-          <div className="sidebar-action">
-            <Link href="/settings">
-              <IconButton icon={<SettingsIcon />} shadow />
-            </Link>
-          </div>
-          <div className="sidebar-action">
-            <IconButton
-              icon={<>{theme === Theme.Light ? <LightIcon /> : <DarkIcon />}</>}
-              onClick={() => {
-                if (theme === Theme.Light)
-                  config.update((config) => (config.theme = Theme.Dark));
-                else config.update((config) => (config.theme = Theme.Light));
-              }}
-              shadow
-            />
-          </div>
-          {open && (
-            <div className="sidebar-action ml-auto">
-              <IconButton icon={<CloseIcon />} onClick={toggleOpen} shadow />
-            </div>
-          )}
+      <div className="f py-5 justify-between">
+        <div className="f space-x-3">
+          <Link href="/settings">
+            <IconButton icon={<SettingsIcon />} shadow />
+          </Link>
+          <IconButton
+            icon={<>{theme === Theme.Light ? <LightIcon /> : <DarkIcon />}</>}
+            onClick={() => {
+              if (theme === Theme.Light)
+                config.update((config) => (config.theme = Theme.Dark));
+              else config.update((config) => (config.theme = Theme.Light));
+            }}
+            shadow
+          />
         </div>
+        {open && (
+          <IconButton icon={<CloseIcon />} onClick={toggleOpen} shadow />
+        )}
       </div>
     </div>
   );
