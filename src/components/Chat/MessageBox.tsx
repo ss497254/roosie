@@ -30,7 +30,7 @@ export const MessageBox: React.FC<props> = ({
       <p className="overflow-x-hidden text-sm hover:break-words text-ellipsis">
         {content}
       </p>
-      <div className="mt-3 -mb-1 text-xs flex">
+      <div className="mt-3 -mb-1 flex">
         <div className="flex-grow font-medium">
           {dir === "left" ? username : delivering ? "✔" : "✔✔"}
         </div>

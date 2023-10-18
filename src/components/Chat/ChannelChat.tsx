@@ -46,6 +46,7 @@ export const ChannelChat = ({ channel }: { channel: string }) => {
   const isMobileScreen = useMobileScreen();
 
   const showMaxIcon = !isMobileScreen;
+  const fontSize = config.fontSize;
 
   const onChatBodyScroll = useDebouncedCallback(
     (e: HTMLElement) => {
@@ -104,10 +105,11 @@ export const ChannelChat = ({ channel }: { channel: string }) => {
         className={styles["chat-body"]}
         ref={scrollRef}
         onScroll={(e) => onChatBodyScroll(e.currentTarget)}
+        style={{ fontSize }}
       >
         <MessagesContainer channel={channel} />
       </div>
-      <div className="relative">
+      <div className="relative" style={{ fontSize }}>
         <ChatActions scrollToBottom={scrollDomToBottom} hitBottom={hitBottom} />
         <MessageInput channel={channel} />
       </div>
