@@ -106,13 +106,10 @@ body {
   color: var(--black);
   margin: 0;
   padding: 0;
-  width: 100vw;
+  width: 100%;
 
-  user-select: none;
   touch-action: pan-x pan-y;
   overflow: hidden;
-
-  background-color: var(--secondary);
 }
 
 ::-webkit-scrollbar {
