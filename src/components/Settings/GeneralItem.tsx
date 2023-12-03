@@ -1,3 +1,4 @@
+import { PrimaryColorPallete, SecondaryColorPallete } from "src/constant";
 import { SubmitKey, useAccessStore, useAppConfig } from "src/store";
 import { IconButton, InputRange, List, ListItem, Select } from "src/ui";
 
@@ -10,7 +11,10 @@ export function GeneralItem() {
 
   return (
     <List>
-      <ListItem title="Username">
+      <ListItem
+        title="Username"
+        subTitle={accessStore.user?.admin ? "admin" : "user"}
+      >
         <h2 className="font-semibold text-lg p-2">
           {accessStore.user?.username}
         </h2>
@@ -46,13 +50,42 @@ export function GeneralItem() {
         />
       </ListItem>
 
-      <ListItem title="App color" subTitle="Changes your app primary color">
-        <input
-          type="color"
+      <ListItem
+        title="App primary color"
+        subTitle="Changes your app's primary color"
+      >
+        <Select
+          value={config.primaryColor}
           onChange={(e) => {
+            config.update((config) => (config.primaryColor = e.target.value));
             document.body.style.setProperty("--primary", e.target.value);
           }}
-        />
+        >
+          {Object.keys(PrimaryColorPallete).map((v) => (
+            <option key={v} value={PrimaryColorPallete[v]}>
+              {v}
+            </option>
+          ))}
+        </Select>
+      </ListItem>
+
+      <ListItem
+        title="App secondary color"
+        subTitle="Changes your app's secondary color"
+      >
+        <Select
+          value={config.secondaryColor}
+          onChange={(e) => {
+            config.update((config) => (config.secondaryColor = e.target.value));
+            document.body.style.setProperty("--secondary", e.target.value);
+          }}
+        >
+          {Object.keys(SecondaryColorPallete).map((v) => (
+            <option key={v} value={SecondaryColorPallete[v]}>
+              {v}
+            </option>
+          ))}
+        </Select>
       </ListItem>
 
       <ListItem title="Font Size" subTitle="Adjust font size of chat content">
