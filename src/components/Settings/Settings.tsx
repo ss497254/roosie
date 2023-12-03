@@ -1,30 +1,14 @@
-import Router from "next/router";
-import { useEffect } from "react";
+import { useAccessStore } from "src/store";
 import { ErrorBoundary } from "../ErrorBoundary";
 import { SidebarOpenBtn } from "../SidebarOpenBtn";
 import { ChatItem } from "./ChatItem";
 import { DangerItems } from "./DangerItems";
 import { GeneralItem } from "./GeneralItem";
-import { ModelConfigList } from "./ModelConfig";
-import { SyncItems } from "./SyncItem";
+import { ModelConfig } from "./ModelConfig";
 import { ZConfig } from "./ZConfig";
-import { useAccessStore } from "src/store";
 
 export function Settings() {
   const user = useAccessStore((state) => state.user);
-
-  useEffect(() => {
-    const keydownEvent = (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
-        Router.back();
-      }
-    };
-    document.addEventListener("keydown", keydownEvent);
-    return () => {
-      document.removeEventListener("keydown", keydownEvent);
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   return (
     <ErrorBoundary>
@@ -43,8 +27,7 @@ export function Settings() {
         <GeneralItem />
         <ChatItem />
         <ZConfig />
-        {user!.admin && <SyncItems />}
-        {user!.admin && <ModelConfigList />}
+        {user!.admin && <ModelConfig />}
         <DangerItems />
       </div>
     </ErrorBoundary>
