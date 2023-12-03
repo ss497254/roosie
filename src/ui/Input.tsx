@@ -82,3 +82,49 @@ export function InputRange({
 }
 
 export interface TextAreaProps extends React.ComponentPropsWithoutRef<"div"> {}
+
+export interface FileInputProps
+  extends React.InputHTMLAttributes<HTMLInputElement> {
+  containerClassName?: string;
+  error?: string;
+}
+
+export const FileInput: React.FC<FileInputProps> = ({
+  className,
+  error,
+  containerClassName,
+  ...props
+}) => {
+  const id = useId();
+
+  return (
+    <div className={containerClassName}>
+      <label
+        htmlFor={id}
+        className="c flex-col w-full min-h-[128px] border border-light rounded-md cursor-pointer bg-gray hover:border-primary"
+      >
+        <svg
+          aria-hidden="true"
+          className="w-8 h-8 mb-2"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="2"
+            d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
+          ></path>
+        </svg>
+        <p className="text-sm">
+          <span className="font-semibold">Click to upload</span> or drag and
+          drop
+        </p>
+      </label>
+      <input id={id} type="file" className="hidden" {...props} />
+      {error && <p className="text-xs text-red-500 ml-1 mt-1">{error}</p>}
+    </div>
+  );
+};
