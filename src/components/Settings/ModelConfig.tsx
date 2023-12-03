@@ -1,5 +1,6 @@
-import { ModalConfigValidator, ModelConfig, useAppConfig } from "src/store";
+import { ModelConfig, useAppConfig } from "src/store";
 import { InputRange, List, ListItem, Select } from "src/ui";
+import { ModalConfigValidator } from "src/utils/model-config-validator";
 
 const updateModelConfigDefault = (
   updater: (modelConfig: ModelConfig) => void,
