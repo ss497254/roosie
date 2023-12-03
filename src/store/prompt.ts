@@ -137,7 +137,7 @@ export const usePromptStore = create<PromptStore>()(
       },
 
       loadPrompts() {
-        const PROMPT_URL = "./prompts.json";
+        const PROMPT_URL = "/prompts.json";
 
         type PromptList = Array<[string, string]>;
 
