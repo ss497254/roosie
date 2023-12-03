@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
-import { ModelType } from "src/store";
+import { ModelType } from "src/types/Mask";
 
 import React from "react";
 import BlackBotIcon from "src/icons/black-bot.svg";

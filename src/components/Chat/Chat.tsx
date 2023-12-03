@@ -1,6 +1,5 @@
 import React, { Fragment, useEffect, useMemo, useRef, useState } from "react";
 import { ChatControllerPool } from "src/api-client/chat-controller";
-import { ChatCommandPrefix, useChatCommand } from "src/hooks/useChatCommand";
 import { ExportMessageModal } from "src/components/Exporter/ExportMessageModal";
 import { MaskAvatar } from "src/components/Mask";
 import {
@@ -8,6 +7,7 @@ import {
   LAST_INPUT_KEY,
   REQUEST_TIMEOUT_MS,
 } from "src/constant";
+import { ChatCommandPrefix, useChatCommand } from "src/hooks/useChatCommand";
 import { useMobileScreen } from "src/hooks/useMobileScreen";
 import { useScrollToBottom } from "src/hooks/useScrollToBottom";
 import { useSubmitHandler } from "src/hooks/useSubmitHandler";
@@ -15,20 +15,20 @@ import {
   BOT_HELLO,
   ChatMessage,
   DEFAULT_TOPIC,
-  ModelType,
   SubmitKey,
   createMessage,
   useAppConfig,
   useChatStore,
 } from "src/store";
 import { usePromptStore } from "src/store/prompt";
+import { ModelType } from "src/types/Mask";
 import { Selector, showPrompt, showToast } from "src/ui";
 import { IconButton } from "src/ui/IconButtonWithText";
 import { autoGrowTextArea, copyToClipboard, selectOrCopy } from "src/utils";
 import { prettyObject } from "src/utils/format";
 import { useDebouncedCallback } from "use-debounce";
-import { SidebarOpenBtn } from "../SidebarOpenBtn";
 import { Markdown } from "../Markdown";
+import { SidebarOpenBtn } from "../SidebarOpenBtn";
 import { ChatAction } from "./ChatAction";
 import { ClearContextDivider } from "./ClearContextDivider";
 import { EditMessageModal } from "./EditMesssageModal";

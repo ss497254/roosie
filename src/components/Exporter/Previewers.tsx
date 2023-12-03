@@ -103,7 +103,7 @@ export function ImagePreviewer(props: {
             <div className={styles["main-title"]}>Roosie</div>
             <div className={styles["sub-title"]}>Your all time partner.</div>
             <div className={styles["icons"]}>
-              <ExportAvatar avatar={config.avatar} />
+              <ExportAvatar avatar={mask.avatar} />
               <span className={styles["icon-space"]}>&</span>
               <ExportAvatar avatar={mask.avatar} />
             </div>
@@ -133,9 +133,7 @@ export function ImagePreviewer(props: {
               key={i}
             >
               <div className={styles["avatar"]}>
-                <ExportAvatar
-                  avatar={m.role === "user" ? config.avatar : mask.avatar}
-                />
+                <ExportAvatar avatar={mask.avatar} />
               </div>
 
               <div className={styles["body"]}>
