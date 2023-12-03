@@ -1,14 +1,18 @@
-import React, { useEffect, useRef } from "react";
-import SendWhiteIcon from "src/icons/send-white.svg";
+import React, { useEffect, useRef, useState } from "react";
 import { getChannelStore } from "src/store/channel";
 import { IconButton } from "src/ui/Buttons/IconButton";
 import { ExpandingTextArea } from "./ExpandingTextarea";
+import { ImageSelect } from "./ImageSelect";
+
+import CameraIcon from "src/icons/camera.svg";
+import SendWhiteIcon from "src/icons/send-white.svg";
 
 interface Props {
   channel: string;
 }
 
 export const MessageInput: React.FC<Props> = ({ channel }) => {
+  const [imageSelectOpen, setImageSelectOpen] = useState(false);
   const [sendMessage, isSubmitting] = getChannelStore(channel)((state) => [
     state.sendMessage,
     state.isSubmitting,
@@ -48,16 +52,29 @@ export const MessageInput: React.FC<Props> = ({ channel }) => {
   }, [channel]);
 
   return (
-    <div className="flex items-end p-3 pr-4 border-t-light">
+    <div className="flex items-end p-3 pr-4 border-t-light space-x-2 md:space-x-3">
+      {imageSelectOpen && (
+        <ImageSelect onClose={() => setImageSelectOpen(false)} />
+      )}
       <ExpandingTextArea ref={ref} />
-      <IconButton
-        size={40}
-        onClick={isSubmitting ? undefined : onSubmit}
-        loading={isSubmitting}
-        className="!p-2 ml-3 duration-200"
-      >
-        <SendWhiteIcon size={24} />
-      </IconButton>
+      <div className="space-y-2">
+        <IconButton
+          size={36}
+          onClick={() => setImageSelectOpen(true)}
+          loading={imageSelectOpen}
+          className="!p-2 duration-200"
+        >
+          <CameraIcon />
+        </IconButton>
+        <IconButton
+          size={36}
+          onClick={isSubmitting ? undefined : onSubmit}
+          loading={isSubmitting}
+          className="!p-2 duration-200"
+        >
+          <SendWhiteIcon size={24} />
+        </IconButton>
+      </div>
     </div>
   );
 };
