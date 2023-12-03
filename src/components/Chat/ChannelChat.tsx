@@ -1,15 +1,15 @@
 import { useState } from "react";
-import { IconButton } from "src/ui";
 import { useMobileScreen } from "src/hooks/useMobileScreen";
 import { useScrollToBottom } from "src/hooks/useScrollToBottom";
 import { useAppConfig } from "src/store";
 import { getChannelStore } from "src/store/channel";
+import { IconButton } from "src/ui";
 import { useDebouncedCallback } from "use-debounce";
+import { SidebarOpenBtn } from "../SidebarOpenBtn";
 import { ChatAction } from "./ChatAction";
 import { MessageInput } from "./MessageInput";
 import { MessagesContainer } from "./MessagesContainer";
 import styles from "./chat.module.scss";
-import { SidebarOpenBtn } from "../SidebarOpenBtn";
 
 import BottomIcon from "src/icons/bottom.svg";
 import MaxIcon from "src/icons/max.svg";
