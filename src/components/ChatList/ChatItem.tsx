@@ -2,7 +2,7 @@ import { Mask } from "src/store";
 import DeleteIcon from "src/icons/delete.svg";
 import { IconButton } from "src/ui/IconButtonWithText";
 
-export function ChatItem(props: {
+export interface ChatItemProps {
   onClick?: () => void;
   onDelete?: () => void;
   title: string;
@@ -10,13 +10,17 @@ export function ChatItem(props: {
   time: string;
   selected: boolean;
   narrow?: boolean;
+  hasUpdate?: boolean;
   mask?: Mask;
-}) {
+}
+
+export function ChatItem(props: ChatItemProps) {
   return (
     <div
       title={`${props.title}\n${props.count} messages`}
       className={[
-        "chat-item group relative",
+        "chat-item group",
+        props.hasUpdate && "chat-item-update",
         props.selected && "chat-item-selected",
       ].join(" ")}
       onClick={props.onClick}
