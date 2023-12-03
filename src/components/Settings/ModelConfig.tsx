@@ -16,8 +16,6 @@ export function ModelConfigList({
   updateModelConfig = updateModelConfigDefault,
   modelConfig = useAppConfig.getState().modelConfig,
 }) {
-  console.log("model cofng rend");
-
   return (
     <List>
       <ListItem title="Model">
@@ -49,7 +47,7 @@ export function ModelConfigList({
         <InputRange
           value={modelConfig.temperature?.toFixed(1)}
           min="0"
-          max="1" // lets limit it to 0-1
+          max="1"
           step="0.1"
           onChange={(e) => {
             updateModelConfig(
@@ -224,4 +222,9 @@ export function ModelConfigList({
       </ListItem>
     </List>
   );
+}
+
+export function ModelConfig() {
+  const { modelConfig } = useAppConfig();
+  return <ModelConfigList modelConfig={modelConfig} />;
 }
