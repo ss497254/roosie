@@ -1,4 +1,3 @@
-export const RUNTIME_CONFIG_DOM = "danger-runtime-config";
 export const isServer = typeof window === "undefined";
 
 export const API_URL = process.env.NEXT_PUBLIC_API_URL;
@@ -91,4 +90,25 @@ export const DEFAULT_MODELS = [
 ] as const;
 
 export const CHAT_PAGE_SIZE = 15;
-export const MAX_RENDER_MSG_COUNT = 45;
+
+export const PrimaryColorPallete: Record<string, string> = {
+  Emerald: "#059669",
+  Teal: "#14b8a6",
+  Cyan: "#06b6d4",
+  Sky: "#0ea5e9",
+  Blue: "#3b82f6",
+  Indigo: "#6366f1",
+  Pink: "#ec4899",
+  Rose: "#f43f5e",
+};
+
+export const SecondaryColorPallete: Record<string, string> = {
+  Emerald: "#d1fae5",
+  Teal: "#ccfbf1",
+  Sky: "#e0f2fe",
+  Blue: "#dbeafe",
+  Indigo: "#e0e7ff",
+  Purple: "#f3e8ff",
+  Violet: "#ede9fe",
+  Pink: "#fce7f3",
+};
