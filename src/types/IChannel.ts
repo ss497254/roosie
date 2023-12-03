@@ -3,4 +3,5 @@ export interface IChannel {
   access: string;
   messages: number;
   lastUpdate: number;
+  newMessages?: boolean;
 }

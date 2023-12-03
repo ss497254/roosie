@@ -4,4 +4,5 @@ export interface IMessage {
   timestamp: string;
   image?: string;
   delivering?: boolean;
+  edited?: boolean;
 }
