@@ -102,7 +102,7 @@
   }
 
   .modal-content {
-    max-height: 40vh;
+    max-height: 60vh;
     padding: var(--modal-padding);
     overflow: auto;
   }
@@ -132,10 +132,6 @@
     width: 100vw;
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0;
-
-    .modal-content {
-      max-height: 50vh;
-    }
   }
 }
 
@@ -209,12 +205,11 @@
 
 .select-with-icon {
   position: relative;
-  max-width: fit-content;
 
   .select-with-icon-select {
     height: 100%;
     border: var(--border-light);
-    padding: 10px 25px 10px 15px;
+    padding: 10px 35px 10px 15px;
     border-radius: 10px;
     appearance: none;
     cursor: pointer;

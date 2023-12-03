@@ -110,3 +110,15 @@
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+
+.chat-item-update::before {
+  content: "";
+  height: 8px;
+  width: 8px;
+  position: absolute;
+  z-index: 10;
+  top: 6px;
+  right: 6px;
+  border-radius: 100%;
+  @apply bg-rose-500;
+}

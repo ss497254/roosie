@@ -11,7 +11,7 @@
   --black: rgb(48, 48, 48);
   --gray: rgb(250, 250, 250);
   --primary: #10b981;
-  --secondary: rgb(231, 248, 255);
+  --secondary: #e0f2fe;
   --hover-color: #f3f3f3;
   --bar-color: rgba(0, 0, 0, 0.1);
   --theme-color: var(--gray);
@@ -174,19 +174,20 @@ input[type="checkbox"]:checked::after {
 
 input[type="range"] {
   appearance: none;
-  background-color: var(--white);
+  background-color: var(--gray);
+  border-radius: 10px;
+  min-height: 10px;
   color: var(--black);
 }
 
 @mixin thumb() {
   appearance: none;
-  height: 8px;
+  height: 12px;
   width: 20px;
   background-color: var(--primary);
   border-radius: 10px;
   cursor: pointer;
   transition: all ease 0.3s;
-  margin-left: 5px;
   border: none;
 }
 
@@ -203,8 +204,7 @@ input[type="range"]::-ms-thumb {
 }
 
 @mixin thumbHover() {
-  transform: scaleY(1.2);
-  width: 24px;
+  transform: scale(1.2);
 }
 
 input[type="range"]::-webkit-slider-thumb:hover {
@@ -369,6 +369,10 @@ pre {
 
 .bg-box {
   background-color: var(--surface);
+}
+
+.border-box {
+  border-color: var(--surface);
 }
 
 .f {
