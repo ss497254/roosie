@@ -1,4 +1,4 @@
-import React, { HTMLProps, useState } from "react";
+import React, { useId, useState } from "react";
 import { IconButton } from "./IconButtonWithText";
 
 import EyeOffIcon from "src/icons/eye-off.svg";
@@ -61,13 +61,14 @@ export function InputRange({
 }: InputRangeProps) {
   return (
     <div
-      className={`border-light rounded-lg py-2.5 px-3 flex justify-between max-w-[50%] ${
-        className ?? ""
-      }`}
+      className={[
+        "border-light rounded-lg py-2.5 px-3 flex justify-between items-center max-w-[50%]",
+        className ?? "",
+      ].join(" ")}
     >
       <div className="w-10 text-center">{title || value}</div>
       <input
-        className="max-w-[calc(100%-40px)]"
+        className="max-w-[calc(100%-50px)]"
         type="range"
         title={title}
         value={value}
