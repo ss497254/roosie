@@ -13,8 +13,9 @@ import { estimateTokenLength } from "src/utils/estimate-token-length";
 import { prettyObject } from "src/utils/format";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import { ModelConfig, ModelType, useAppConfig } from "./config";
+import { ModelConfig, useAppConfig } from "./config";
 import { Mask, createEmptyMask } from "./mask";
+import { ModelType } from "src/types/Mask";
 
 export type ChatMessage = RequestMessage & {
   date: string;
