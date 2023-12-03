@@ -35,7 +35,9 @@ export function Modal(props: ModalProps) {
   const [isMax, setMax] = useState(!!props.defaultMax);
 
   return (
-    <div className={"modal-container" + ` ${isMax && "modal-container-max"}`}>
+    <div
+      className={["modal-container", isMax && "modal-container-max"].join(" ")}
+    >
       <div className="modal-header">
         <div className="modal-title">{props.title}</div>
 

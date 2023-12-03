@@ -1,4 +1,4 @@
-import { ModelType } from "src/store";
+import { ModelType } from "src/types/Mask";
 import { ChatGPTApi } from "./openai";
 
 export const ROLES = ["system", "user", "assistant"] as const;
