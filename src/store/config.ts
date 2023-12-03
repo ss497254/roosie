@@ -1,14 +1,13 @@
+import { LLMModel } from "src/api-client";
+import { ModelType } from "src/types/Mask";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import { LLMModel } from "src/api-client";
 import {
   API_URL,
   DEFAULT_INPUT_TEMPLATE,
   DEFAULT_MODELS,
   WS_URL,
 } from "../constant";
-
-export type ModelType = (typeof DEFAULT_MODELS)[number]["name"];
 
 export enum SubmitKey {
   Enter = "Enter",
@@ -25,14 +24,15 @@ export enum Theme {
 }
 
 export const DEFAULT_CONFIG = {
-  submitKey: SubmitKey.Enter as SubmitKey,
-  avatar: "1f603",
   fontSize: 14,
   theme: Theme.Auto as Theme,
   tightBorder: true,
+  primaryColor: "#10b981",
+  secondaryColor: "#e0f2fe",
+
+  submitKey: SubmitKey.ShiftEnter as SubmitKey,
   sendPreviewBubble: true,
   enableAutoGenerateTitle: true,
-  sidebarWidth: 300,
 
   disablePromptHint: false,
   apiURL: API_URL,
@@ -126,37 +126,3 @@ export const useAppConfig = create<ChatConfigStore>()(
     },
   ),
 );
-
-export function limitNumber(
-  x: number,
-  min: number,
-  max: number,
-  defaultValue: number,
-) {
-  if (typeof x !== "number" || isNaN(x)) {
-    return defaultValue;
-  }
-
-  return Math.min(max, Math.max(min, x));
-}
-
-export const ModalConfigValidator = {
-  model(x: string) {
-    return x as ModelType;
-  },
-  max_tokens(x: number) {
-    return limitNumber(x, 0, 100000, 2000);
-  },
-  presence_penalty(x: number) {
-    return limitNumber(x, -2, 2, 0);
-  },
-  frequency_penalty(x: number) {
-    return limitNumber(x, -2, 2, 0);
-  },
-  temperature(x: number) {
-    return limitNumber(x, 0, 1, 1);
-  },
-  top_p(x: number) {
-    return limitNumber(x, 0, 1, 1);
-  },
-};
