@@ -7,8 +7,8 @@ interface props extends IMessage {
 }
 
 const dirClassNames = {
-  left: "mr-auto",
-  right: "ml-auto",
+  left: "mr-auto rounded-tl-none",
+  right: "ml-auto rounded-tr-none",
 };
 
 export const MessageBox: React.FC<props> = ({
