@@ -47,10 +47,13 @@ export const getChannelStore = (channel: string) => {
       set({ isSubmitting: true });
 
       try {
-        const res = await Cfetch<IMessage>("/chats/send-message", {
-          method: "POST",
-          body: JSON.stringify({ channel, content, image }),
-        });
+        const res = await Cfetch<IMessage>(
+          `/chats/channels/${channel}/messages`,
+          {
+            method: "POST",
+            body: JSON.stringify({ content, image }),
+          },
+        );
 
         if (res.success) {
           res.data.delivering = true;
@@ -73,10 +76,13 @@ export const getChannelStore = (channel: string) => {
       set({ isSubmitting: true });
 
       try {
-        const res = await Cfetch<IMessage>(`/channels/${channel}/message`, {
-          method: "PATCH",
-          body: JSON.stringify({ content, image }),
-        });
+        const res = await Cfetch<IMessage>(
+          `/chats/channels/${channel}/messages`,
+          {
+            method: "PATCH",
+            body: JSON.stringify({ content, image }),
+          },
+        );
 
         if (res.success) {
           res.data.delivering = true;
