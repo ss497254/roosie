@@ -40,8 +40,8 @@ module.exports = {
         },
       },
       animation: {
-        "slide-in": "slide-in ease 0.5sec",
-        "slide-in-top": "slide-in-top ease 0.5sec",
+        "slide-in": "slide-in 0.5s ease",
+        "slide-in-top": "slide-in-top 0.5s ease",
       },
     },
   },
