@@ -17,7 +17,8 @@ export interface IMessageStore {
   isLoading: boolean;
   isSubmitting: boolean;
   totalMessages: number;
-  sendMessage: (content: string) => Promise<boolean>;
+  editMessage: (content: string, image?: string) => Promise<boolean>;
+  sendMessage: (content: string, image?: string) => Promise<boolean>;
   addMessage: (message: IMessage, override?: boolean) => void;
   loadOldMessages: () => Promise<void>;
   clearMessages: () => void;
@@ -42,18 +43,44 @@ export const getChannelStore = (channel: string) => {
     oldMessages: [],
     totalMessages: 0,
 
-    sendMessage: async (content) => {
+    sendMessage: async (content, image) => {
       set({ isSubmitting: true });
 
       try {
         const res = await Cfetch<IMessage>("/chats/send-message", {
           method: "POST",
-          body: JSON.stringify({ channel, content }),
+          body: JSON.stringify({ channel, content, image }),
         });
 
         if (res.success) {
           res.data.delivering = true;
           get().addMessage(res.data);
+
+          return true;
+        }
+      } catch (e: any) {
+        showToast("Message not sent", {
+          text: e.message || e.name,
+        });
+        console.warn(e);
+      }
+
+      set({ isSubmitting: false });
+      return false;
+    },
+
+    editMessage: async (content, image) => {
+      set({ isSubmitting: true });
+
+      try {
+        const res = await Cfetch<IMessage>(`/channels/${channel}/message`, {
+          method: "PATCH",
+          body: JSON.stringify({ content, image }),
+        });
+
+        if (res.success) {
+          res.data.delivering = true;
+          get().addMessage(res.data, true);
 
           return true;
         }
