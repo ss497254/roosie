@@ -14,9 +14,14 @@ export function ChannelChatList(props: { narrow?: boolean }) {
           title={item.name}
           time={new Date(item.lastUpdate).toLocaleString()}
           selected={router.query?.channel === item.name}
+          hasUpdate={item.newMessages}
           count={item.messages}
           narrow={props.narrow}
-          onClick={() => Router.push(`/c/${item.name}`)}
+          onClick={() => {
+            channels[idx].newMessages = false;
+            useAccessStore.setState({ channels: [...channels] });
+            Router.push(`/c/${item.name}`);
+          }}
         />
       ))}
     </div>
