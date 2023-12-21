@@ -23,3 +23,13 @@ export const useAccessStore = create<AccessControlStore>()(
     },
   ),
 );
+
+useAccessStore.subscribe((newState, prevState) => {
+  for (const channelIdx in newState.channels || []) {
+    const newChannel = prevState.channels?.[channelIdx]!;
+    const prevChannel = newState.channels?.[channelIdx];
+    if (prevChannel && prevChannel.messages < newChannel.messages) {
+      newChannel.newMessages = true;
+    }
+  }
+});
